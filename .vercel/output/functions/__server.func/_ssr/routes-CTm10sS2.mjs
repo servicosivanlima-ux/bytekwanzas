@@ -1,235 +1,33 @@
 import { r as __toESM } from "../_runtime.mjs";
+import { t as adminStore } from "./admin-store-f2U4Abvh.mjs";
 import { n as require_jsx_runtime, r as require_react } from "../_libs/react+tanstack__react-query.mjs";
-import { _ as Cog, a as Sparkles, b as Building2, c as Send, d as MessageCircle, f as Mail, g as ExternalLink, h as Globe, i as Users, l as PanelsTopLeft, m as GraduationCap, n as Wrench, o as ShoppingCart, p as Hotel, r as UtensilsCrossed, s as Shield, t as Zap, u as Newspaper, v as Clock, x as ArrowRight, y as Check } from "../_libs/lucide-react.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-DybSvh1f.js
+import { A as Globe, C as Lock, D as Hotel, F as Cog, G as Boxes, H as Check, I as CodeXml, K as ArrowRight, L as Cloud, N as ExternalLink, P as Database, R as Clock, T as Layers, U as Building2, _ as PanelsTopLeft, a as Users, b as MessageCircle, c as Sparkles, d as Shield, i as UtensilsCrossed, k as GraduationCap, l as Smartphone, m as Send, r as Wrench, t as Zap, u as ShoppingCart, v as Newspaper, x as Mail, y as Monitor } from "../_libs/lucide-react.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-CTm10sS2.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
-var WHATSAPP = "957455005";
-var WHATSAPP_URL = `https://wa.me/244${WHATSAPP}?text=${encodeURIComponent("Olá ByteKwanza! Gostaria de um orçamento.")}`;
-var EMAIL = "servicos.ivanlima@gmail.com";
-var services = [
-	{
-		icon: PanelsTopLeft,
-		name: "Landing Page",
-		tag: "1 página",
-		price: "120.000 – 180.000",
-		desc: "Página única de alto impacto para captar leads e converter visitantes.",
-		features: [
-			"Design responsivo e moderno",
-			"Formulário de captura de contactos",
-			"Optimização mobile e tablet",
-			"Integração com redes sociais"
-		],
-		deadline: "5 a 10 dias úteis",
-		ideal: "Campanhas, lançamentos de produtos e eventos."
-	},
-	{
-		icon: Globe,
-		name: "Site Institucional",
-		tag: "até 5 páginas",
-		price: "250.000 – 450.000",
-		desc: "Presença profissional online sólida e credível.",
-		features: [
-			"Até 5 páginas personalizadas",
-			"Design profissional e responsivo",
-			"Painel de gestão de conteúdo",
-			"Formulários integrados"
-		],
-		deadline: "10 a 20 dias úteis",
-		ideal: "PMEs, consultores, profissionais liberais e ONGs."
-	},
-	{
-		icon: Building2,
-		name: "Site Empresarial",
-		tag: "6 a 10 páginas",
-		price: "450.000 – 800.000",
-		desc: "Plataforma completa para empresas em crescimento.",
-		features: [
-			"Até 10 páginas com conteúdo à medida",
-			"Blog integrado",
-			"Área de clientes / membros",
-			"Galeria de portefólio"
-		],
-		deadline: "15 a 30 dias úteis",
-		ideal: "Escritórios de advocacia, clínicas e consultorias."
-	},
-	{
-		icon: ShoppingCart,
-		name: "Loja Online",
-		tag: "E-commerce",
-		price: "900.000 – 2.000.000+",
-		desc: "Venda 24/7 com gestão completa e pagamentos integrados.",
-		features: [
-			"Catálogo completo de produtos",
-			"Carrinho e sistema de encomendas",
-			"Multicaixa Express e transferências",
-			"Gestão de stock e painel admin"
-		],
-		deadline: "20 a 45 dias úteis",
-		ideal: "Lojas físicas, marcas, artesãos e empreendedores.",
-		featured: true
-	},
-	{
-		icon: Newspaper,
-		name: "Portal de Notícias",
-		tag: "Editorial",
-		price: "1.200.000 – 3.000.000+",
-		desc: "Plataforma editorial robusta preparada para tráfego elevado.",
-		features: [
-			"Publicação e gestão editorial",
-			"Categorias, tags e comentários",
-			"Painel multi-editor com permissões",
-			"Optimização para escala"
-		],
-		deadline: "30 a 60 dias úteis",
-		ideal: "Media, associações e portais temáticos."
-	},
-	{
-		icon: Cog,
-		name: "Sistema Web Personalizado",
-		tag: "Sob medida",
-		price: "A partir de 2.500.000",
-		desc: "Solução à medida para automatizar processos do seu negócio.",
-		features: [
-			"Análise de requisitos e arquitectura",
-			"Funcionalidades sob medida",
-			"Base de dados segura e optimizada",
-			"Documentação técnica completa"
-		],
-		deadline: "45 a 90+ dias úteis",
-		ideal: "Gestão interna, plataformas B2B e automação."
-	},
-	{
-		icon: GraduationCap,
-		name: "Sistema Escolar",
-		tag: "Educação",
-		price: "1.500.000 – 4.000.000+",
-		desc: "Plataforma completa de gestão escolar: matrículas, notas, turmas e comunicação com encarregados.",
-		features: [
-			"Matrículas e gestão de alunos",
-			"Lançamento de notas e pautas",
-			"Controlo de presenças e faltas",
-			"Portal do encarregado de educação",
-			"Emissão de declarações e boletins",
-			"Gestão de turmas e horários"
-		],
-		deadline: "45 a 90 dias úteis",
-		ideal: "Escolas primárias, colégios privados e institutos."
-	},
-	{
-		icon: Hotel,
-		name: "Sistema de Hospedaria",
-		tag: "Hotelaria",
-		price: "1.800.000 – 5.000.000+",
-		desc: "Gestão completa de reservas, check-in/out, quartos e facturação para hotéis e residenciais.",
-		features: [
-			"Reservas online e gestão de quartos",
-			"Check-in / check-out digital",
-			"Controlo de ocupação em tempo real",
-			"Facturação e relatórios financeiros",
-			"Gestão de funcionários e turnos",
-			"Integração com canais de reserva"
-		],
-		deadline: "45 a 90 dias úteis",
-		ideal: "Hotéis, residenciais, pensões e apart-hotéis."
-	},
-	{
-		icon: UtensilsCrossed,
-		name: "Sistema de Restaurante",
-		tag: "F&B",
-		price: "800.000 – 2.500.000+",
-		desc: "PDV, gestão de mesas, pedidos em tempo real, stock e relatórios de vendas para restaurantes.",
-		features: [
-			"Ponto de venda (PDV) táctil",
-			"Gestão de mesas e reservas",
-			"Pedidos em tempo real para cozinha",
-			"Controlo de stock e ingredientes",
-			"Relatórios de vendas e facturação",
-			"Gestão de colaboradores e turnos"
-		],
-		deadline: "30 a 60 dias úteis",
-		ideal: "Restaurantes, cafés, snacks e bares."
-	}
-];
-var addons = [
-	{
-		name: "Registo de Domínio",
-		price: "Conforme fornecedor"
-	},
-	{
-		name: "Hospedagem Web (anual)",
-		price: "80.000 – 250.000"
-	},
-	{
-		name: "Manutenção Mensal",
-		price: "30.000 – 150.000"
-	},
-	{
-		name: "SEO Básico",
-		price: "80.000 – 250.000"
-	},
-	{
-		name: "Criação de Logótipo",
-		price: "80.000 – 300.000"
-	}
-];
-var reasons = [
-	{
-		icon: Sparkles,
-		title: "Preços competitivos",
-		desc: "Qualidade a preços justos para o mercado angolano."
-	},
-	{
-		icon: Users,
-		title: "Equipa dedicada",
-		desc: "Profissionais focados no sucesso do seu projecto."
-	},
-	{
-		icon: Zap,
-		title: "Tecnologia actualizada",
-		desc: "Stacks modernas, seguras e de alta performance."
-	},
-	{
-		icon: Wrench,
-		title: "Suporte pós-lançamento",
-		desc: "Acompanhamento contínuo e manutenção."
-	},
-	{
-		icon: Clock,
-		title: "Prazos cumpridos",
-		desc: "Compromisso rigoroso com as datas acordadas."
-	},
-	{
-		icon: Shield,
-		title: "Soluções à medida",
-		desc: "Cada projecto personalizado ao seu negócio."
-	}
-];
-var portfolio = [{
-	name: "+Kumbú",
-	url: "https://makemoney.social.br/",
-	display: "makemoney.social.br",
-	screenshot: "/makemoney-preview.png",
-	desc: "Plataforma angolana onde trabalhadores ganham dinheiro ao completar tarefas de marketing, e clientes promovem as suas redes sociais e negócios através de uma comunidade activa.",
-	tags: [
-		"Plataforma",
-		"Marketing Social",
-		"Angola"
-	],
-	accent: "oklch(0.65_0.18_150)"
-}, {
-	name: "Sem Filtros",
-	url: "https://www.semfiltros.com",
-	display: "semfiltros.com",
-	screenshot: "/semfiltros-preview.png",
-	desc: "Portal de notícias angolano independente com cobertura jornalística sem censura e conteúdos de actualidade.",
-	tags: [
-		"Portal de Notícias",
-		"Editorial",
-		"Angola"
-	],
-	accent: "oklch(0.65_0.18_25)"
-}];
+var ICON_MAP = {
+	Layout: PanelsTopLeft,
+	Globe,
+	Building2,
+	ShoppingCart,
+	Newspaper,
+	Cog,
+	GraduationCap,
+	Hotel,
+	UtensilsCrossed,
+	Monitor,
+	Smartphone,
+	Database,
+	Cloud,
+	Code2: CodeXml,
+	Layers,
+	Boxes,
+	Shield,
+	Lock
+};
+function resolveIcon(name) {
+	return ICON_MAP[name] ?? Globe;
+}
 var C = {
 	kw: "oklch(0.72 0.18 295)",
 	tag: "oklch(0.65 0.15 220)",
@@ -921,11 +719,11 @@ var codeSnippets = [
 		]
 	}
 ];
-function ContactForm({ selectedService }) {
+function ContactForm({ selectedService, whatsapp, serviceNames }) {
 	const [formData, setFormData] = (0, import_react.useState)({
 		nome: "",
 		empresa: "",
-		servico: selectedService || "Landing Page",
+		servico: selectedService || serviceNames[0] || "Landing Page",
 		mensagem: ""
 	});
 	(0, import_react.useEffect)(() => {
@@ -937,7 +735,7 @@ function ContactForm({ selectedService }) {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		const text = `*Nova solicitação de orçamento via site ByteKwanza!* 🚀\n\n*Nome:* ${formData.nome}\n` + (formData.empresa ? `*Empresa:* ${formData.empresa}\n` : "") + `*Serviço de interesse:* ${formData.servico}\n\n*Mensagem:* ${formData.mensagem || "Sem mensagem adicional."}`;
-		const url = `https://wa.me/244${WHATSAPP}?text=${encodeURIComponent(text)}`;
+		const url = `https://wa.me/244${whatsapp}?text=${encodeURIComponent(text)}`;
 		window.open(url, "_blank");
 	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", {
@@ -982,10 +780,10 @@ function ContactForm({ selectedService }) {
 						servico: e.target.value
 					}),
 					className: "w-full rounded-xl border border-white/15 bg-white/10 px-4 py-2.5 text-sm text-white focus:border-[oklch(0.72_0.13_78)] focus:outline-none transition [&>option]:bg-slate-900 [&>option]:text-white",
-					children: [services.map((s) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
-						value: s.name,
-						children: s.name
-					}, s.name)), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
+					children: [serviceNames.map((name) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
+						value: name,
+						children: name
+					}, name)), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
 						value: "Outro / Consultoria",
 						children: "Outro / Consultoria"
 					})]
@@ -1255,8 +1053,78 @@ function CodeTerminal() {
 		]
 	});
 }
+var addons = [
+	{
+		name: "Registo de Domínio",
+		price: "Conforme fornecedor"
+	},
+	{
+		name: "Hospedagem Web (anual)",
+		price: "80.000 – 250.000"
+	},
+	{
+		name: "Manutenção Mensal",
+		price: "30.000 – 150.000"
+	},
+	{
+		name: "SEO Básico",
+		price: "80.000 – 250.000"
+	},
+	{
+		name: "Criação de Logótipo",
+		price: "80.000 – 300.000"
+	}
+];
+var reasons = [
+	{
+		icon: Sparkles,
+		title: "Preços competitivos",
+		desc: "Qualidade a preços justos para o mercado angolano."
+	},
+	{
+		icon: Users,
+		title: "Equipa dedicada",
+		desc: "Profissionais focados no sucesso do seu projecto."
+	},
+	{
+		icon: Zap,
+		title: "Tecnologia actualizada",
+		desc: "Stacks modernas, seguras e de alta performance."
+	},
+	{
+		icon: Wrench,
+		title: "Suporte pós-lançamento",
+		desc: "Acompanhamento contínuo e manutenção."
+	},
+	{
+		icon: Clock,
+		title: "Prazos cumpridos",
+		desc: "Compromisso rigoroso com as datas acordadas."
+	},
+	{
+		icon: Shield,
+		title: "Soluções à medida",
+		desc: "Cada projecto personalizado ao seu negócio."
+	}
+];
 function Landing() {
-	const [selectedService, setSelectedService] = (0, import_react.useState)("Landing Page");
+	const [services, setServices] = (0, import_react.useState)(() => adminStore.getServices());
+	const [portfolio, setPortfolio] = (0, import_react.useState)(() => adminStore.getPortfolio());
+	const [settings, setSettings] = (0, import_react.useState)(() => adminStore.getSettings());
+	const [selectedService, setSelectedService] = (0, import_react.useState)(() => adminStore.getServices()[0]?.name ?? "Landing Page");
+	(0, import_react.useEffect)(() => {
+		function onFocus() {
+			setServices(adminStore.getServices());
+			setPortfolio(adminStore.getPortfolio());
+			setSettings(adminStore.getSettings());
+		}
+		window.addEventListener("focus", onFocus);
+		return () => window.removeEventListener("focus", onFocus);
+	}, []);
+	const whatsapp = settings.whatsapp;
+	const email = settings.email;
+	const whatsappUrl = `https://wa.me/244${whatsapp}?text=${encodeURIComponent("Olá ByteKwanza! Gostaria de um orçamento.")}`;
+	const serviceNames = services.map((s) => s.name);
 	const handleSelectService = (serviceName) => {
 		if (serviceName) setSelectedService(serviceName);
 		const element = document.getElementById("contacto");
@@ -1351,7 +1219,7 @@ function Landing() {
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 							className: "mt-6 sm:mt-8 flex flex-col sm:flex-row sm:flex-wrap gap-3",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
-								href: WHATSAPP_URL,
+								href: whatsappUrl,
 								target: "_blank",
 								rel: "noreferrer",
 								className: "inline-flex items-center justify-center gap-2 rounded-full bg-[oklch(0.72_0.13_78)] px-6 py-3 text-sm font-semibold text-[oklch(0.2_0.04_258)] shadow-gold hover:brightness-105 transition",
@@ -1413,7 +1281,7 @@ function Landing() {
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					className: "mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3",
 					children: services.map((s) => {
-						const Icon = s.icon;
+						const Icon = resolveIcon(s.icon);
 						return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", {
 							className: `group relative flex flex-col rounded-2xl border p-5 sm:p-7 transition hover:-translate-y-1 hover:shadow-brand ${s.featured ? "border-[oklch(0.72_0.13_78)]/50 bg-gradient-to-br from-white to-[oklch(0.72_0.13_78)]/5" : "border-border bg-card"}`,
 							children: [
@@ -1671,13 +1539,13 @@ function Landing() {
 							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 								className: "mt-8 flex flex-wrap gap-3",
 								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
-									href: WHATSAPP_URL,
+									href: whatsappUrl,
 									target: "_blank",
 									rel: "noreferrer",
 									className: "inline-flex items-center gap-2 rounded-full bg-[oklch(0.72_0.13_78)] px-6 py-3 text-sm font-semibold text-[oklch(0.2_0.04_258)] shadow-gold hover:brightness-105 transition",
 									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MessageCircle, { className: "h-4 w-4" }), "WhatsApp"]
 								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
-									href: `mailto:${EMAIL}`,
+									href: `mailto:${email}`,
 									className: "inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-6 py-3 text-sm font-semibold hover:bg-white/10 transition",
 									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mail, { className: "h-4 w-4" }), "Enviar email"]
 								})]
@@ -1689,7 +1557,11 @@ function Landing() {
 									className: "text-xl font-bold mb-6 flex items-center gap-2 text-[oklch(0.85_0.1_78)]",
 									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Send, { className: "h-5 w-5" }), " Enviar Mensagem Directa"]
 								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ContactForm, { selectedService }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ContactForm, {
+									selectedService,
+									whatsapp,
+									serviceNames
+								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 									className: "mt-8 pt-6 border-t border-white/10 grid sm:grid-cols-2 gap-4",
 									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -1700,12 +1572,12 @@ function Landing() {
 										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 											className: "text-[10px] uppercase tracking-widest text-white/50",
 											children: "WhatsApp Directo"
-										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
-											href: WHATSAPP_URL,
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
+											href: whatsappUrl,
 											target: "_blank",
 											rel: "noreferrer",
 											className: "text-sm font-semibold hover:text-[oklch(0.85_0.1_78)]",
-											children: "+244 957 455 005"
+											children: ["+244 ", whatsapp]
 										})] })]
 									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 										className: "flex items-center gap-3",
@@ -1718,9 +1590,9 @@ function Landing() {
 												className: "text-[10px] uppercase tracking-widest text-white/50",
 												children: "Email"
 											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
-												href: `mailto:${EMAIL}`,
+												href: `mailto:${email}`,
 												className: "text-sm font-semibold truncate block hover:text-[oklch(0.85_0.1_78)]",
-												children: EMAIL
+												children: email
 											})]
 										})]
 									})]
@@ -1758,9 +1630,16 @@ function Landing() {
 								" ByteKwanza — Soluções digitais feitas em Angola."
 							]
 						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "text-xs text-muted-foreground/60",
-							children: "NIF: 5003198294"
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex items-center gap-4",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+								className: "text-xs text-muted-foreground/60",
+								children: ["NIF: ", settings.nif]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+								href: "/admin",
+								className: "text-xs text-muted-foreground/30 hover:text-muted-foreground/60 transition",
+								children: "Admin"
+							})]
 						})
 					]
 				})

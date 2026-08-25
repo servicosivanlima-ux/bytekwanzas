@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import {
+  adminStore,
+  type ServiceItem,
+  type PortfolioItem,
+  type SiteSettings,
+} from "../lib/admin-store";
 
 import {
   ArrowRight,
@@ -23,6 +29,14 @@ import {
   GraduationCap,
   Hotel,
   UtensilsCrossed,
+  Monitor,
+  Smartphone,
+  Database,
+  Cloud,
+  Code2,
+  Layers,
+  Boxes,
+  Lock,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -56,206 +70,16 @@ export const Route = createFileRoute("/")({
   component: Landing,
 });
 
-const WHATSAPP = "957455005";
-const WHATSAPP_URL = `https://wa.me/244${WHATSAPP}?text=${encodeURIComponent(
-  "Olá ByteKwanza! Gostaria de um orçamento.",
-)}`;
-const EMAIL = "servicos.ivanlima@gmail.com";
+// ─── Icon resolver: maps icon name string → Lucide component ─────────────────
+const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
+  Layout, Globe, Building2, ShoppingCart, Newspaper, Cog,
+  GraduationCap, Hotel, UtensilsCrossed, Monitor, Smartphone,
+  Database, Cloud, Code2, Layers, Boxes, Shield, Lock,
+};
+function resolveIcon(name: string): React.ComponentType<{ className?: string }> {
+  return ICON_MAP[name] ?? Globe;
+}
 
-const services = [
-  {
-    icon: Layout,
-    name: "Landing Page",
-    tag: "1 página",
-    price: "120.000 – 180.000",
-    desc: "Página única de alto impacto para captar leads e converter visitantes.",
-    features: [
-      "Design responsivo e moderno",
-      "Formulário de captura de contactos",
-      "Optimização mobile e tablet",
-      "Integração com redes sociais",
-    ],
-    deadline: "5 a 10 dias úteis",
-    ideal: "Campanhas, lançamentos de produtos e eventos.",
-  },
-  {
-    icon: Globe,
-    name: "Site Institucional",
-    tag: "até 5 páginas",
-    price: "250.000 – 450.000",
-    desc: "Presença profissional online sólida e credível.",
-    features: [
-      "Até 5 páginas personalizadas",
-      "Design profissional e responsivo",
-      "Painel de gestão de conteúdo",
-      "Formulários integrados",
-    ],
-    deadline: "10 a 20 dias úteis",
-    ideal: "PMEs, consultores, profissionais liberais e ONGs.",
-  },
-  {
-    icon: Building2,
-    name: "Site Empresarial",
-    tag: "6 a 10 páginas",
-    price: "450.000 – 800.000",
-    desc: "Plataforma completa para empresas em crescimento.",
-    features: [
-      "Até 10 páginas com conteúdo à medida",
-      "Blog integrado",
-      "Área de clientes / membros",
-      "Galeria de portefólio",
-    ],
-    deadline: "15 a 30 dias úteis",
-    ideal: "Escritórios de advocacia, clínicas e consultorias.",
-  },
-  {
-    icon: ShoppingCart,
-    name: "Loja Online",
-    tag: "E-commerce",
-    price: "900.000 – 2.000.000+",
-    desc: "Venda 24/7 com gestão completa e pagamentos integrados.",
-    features: [
-      "Catálogo completo de produtos",
-      "Carrinho e sistema de encomendas",
-      "Multicaixa Express e transferências",
-      "Gestão de stock e painel admin",
-    ],
-    deadline: "20 a 45 dias úteis",
-    ideal: "Lojas físicas, marcas, artesãos e empreendedores.",
-    featured: true,
-  },
-  {
-    icon: Newspaper,
-    name: "Portal de Notícias",
-    tag: "Editorial",
-    price: "1.200.000 – 3.000.000+",
-    desc: "Plataforma editorial robusta preparada para tráfego elevado.",
-    features: [
-      "Publicação e gestão editorial",
-      "Categorias, tags e comentários",
-      "Painel multi-editor com permissões",
-      "Optimização para escala",
-    ],
-    deadline: "30 a 60 dias úteis",
-    ideal: "Media, associações e portais temáticos.",
-  },
-  {
-    icon: Cog,
-    name: "Sistema Web Personalizado",
-    tag: "Sob medida",
-    price: "A partir de 2.500.000",
-    desc: "Solução à medida para automatizar processos do seu negócio.",
-    features: [
-      "Análise de requisitos e arquitectura",
-      "Funcionalidades sob medida",
-      "Base de dados segura e optimizada",
-      "Documentação técnica completa",
-    ],
-    deadline: "45 a 90+ dias úteis",
-    ideal: "Gestão interna, plataformas B2B e automação.",
-  },
-  {
-    icon: GraduationCap,
-    name: "Sistema Escolar",
-    tag: "Educação",
-    price: "1.500.000 – 4.000.000+",
-    desc: "Plataforma completa de gestão escolar: matrículas, notas, turmas e comunicação com encarregados.",
-    features: [
-      "Matrículas e gestão de alunos",
-      "Lançamento de notas e pautas",
-      "Controlo de presenças e faltas",
-      "Portal do encarregado de educação",
-      "Emissão de declarações e boletins",
-      "Gestão de turmas e horários",
-    ],
-    deadline: "45 a 90 dias úteis",
-    ideal: "Escolas primárias, colégios privados e institutos.",
-  },
-  {
-    icon: Hotel,
-    name: "Sistema de Hospedaria",
-    tag: "Hotelaria",
-    price: "1.800.000 – 5.000.000+",
-    desc: "Gestão completa de reservas, check-in/out, quartos e facturação para hotéis e residenciais.",
-    features: [
-      "Reservas online e gestão de quartos",
-      "Check-in / check-out digital",
-      "Controlo de ocupação em tempo real",
-      "Facturação e relatórios financeiros",
-      "Gestão de funcionários e turnos",
-      "Integração com canais de reserva",
-    ],
-    deadline: "45 a 90 dias úteis",
-    ideal: "Hotéis, residenciais, pensões e apart-hotéis.",
-  },
-  {
-    icon: UtensilsCrossed,
-    name: "Sistema de Restaurante",
-    tag: "F&B",
-    price: "800.000 – 2.500.000+",
-    desc: "PDV, gestão de mesas, pedidos em tempo real, stock e relatórios de vendas para restaurantes.",
-    features: [
-      "Ponto de venda (PDV) táctil",
-      "Gestão de mesas e reservas",
-      "Pedidos em tempo real para cozinha",
-      "Controlo de stock e ingredientes",
-      "Relatórios de vendas e facturação",
-      "Gestão de colaboradores e turnos",
-    ],
-    deadline: "30 a 60 dias úteis",
-    ideal: "Restaurantes, cafés, snacks e bares.",
-  },
-];
-
-const addons = [
-  { name: "Registo de Domínio", price: "Conforme fornecedor" },
-  { name: "Hospedagem Web (anual)", price: "80.000 – 250.000" },
-  { name: "Manutenção Mensal", price: "30.000 – 150.000" },
-  { name: "SEO Básico", price: "80.000 – 250.000" },
-  { name: "Criação de Logótipo", price: "80.000 – 300.000" },
-];
-
-const reasons = [
-  {
-    icon: Sparkles,
-    title: "Preços competitivos",
-    desc: "Qualidade a preços justos para o mercado angolano.",
-  },
-  {
-    icon: Users,
-    title: "Equipa dedicada",
-    desc: "Profissionais focados no sucesso do seu projecto.",
-  },
-  {
-    icon: Zap,
-    title: "Tecnologia actualizada",
-    desc: "Stacks modernas, seguras e de alta performance.",
-  },
-  { icon: Wrench, title: "Suporte pós-lançamento", desc: "Acompanhamento contínuo e manutenção." },
-  { icon: Clock, title: "Prazos cumpridos", desc: "Compromisso rigoroso com as datas acordadas." },
-  { icon: Shield, title: "Soluções à medida", desc: "Cada projecto personalizado ao seu negócio." },
-];
-
-const portfolio = [
-  {
-    name: "+Kumbú",
-    url: "https://makemoney.social.br/",
-    display: "makemoney.social.br",
-    screenshot: "/makemoney-preview.png",
-    desc: "Plataforma angolana onde trabalhadores ganham dinheiro ao completar tarefas de marketing, e clientes promovem as suas redes sociais e negócios através de uma comunidade activa.",
-    tags: ["Plataforma", "Marketing Social", "Angola"],
-    accent: "oklch(0.65_0.18_150)",
-  },
-  {
-    name: "Sem Filtros",
-    url: "https://www.semfiltros.com",
-    display: "semfiltros.com",
-    screenshot: "/semfiltros-preview.png",
-    desc: "Portal de notícias angolano independente com cobertura jornalística sem censura e conteúdos de actualidade.",
-    tags: ["Portal de Notícias", "Editorial", "Angola"],
-    accent: "oklch(0.65_0.18_25)",
-  },
-];
 
 type Token = { cls: string; text: string };
 type CodeLine = Token[];
@@ -521,11 +345,19 @@ const codeSnippets: {
   },
 ];
 
-function ContactForm({ selectedService }: { selectedService?: string }) {
+function ContactForm({
+  selectedService,
+  whatsapp,
+  serviceNames,
+}: {
+  selectedService?: string;
+  whatsapp: string;
+  serviceNames: string[];
+}) {
   const [formData, setFormData] = useState({
     nome: "",
     empresa: "",
-    servico: selectedService || "Landing Page",
+    servico: selectedService || serviceNames[0] || "Landing Page",
     mensagem: "",
   });
 
@@ -543,7 +375,7 @@ function ContactForm({ selectedService }: { selectedService?: string }) {
       `*Serviço de interesse:* ${formData.servico}\n\n` +
       `*Mensagem:* ${formData.mensagem || "Sem mensagem adicional."}`;
 
-    const url = `https://wa.me/244${WHATSAPP}?text=${encodeURIComponent(text)}`;
+    const url = `https://wa.me/244${whatsapp}?text=${encodeURIComponent(text)}`;
     window.open(url, "_blank");
   };
 
@@ -585,9 +417,9 @@ function ContactForm({ selectedService }: { selectedService?: string }) {
             onChange={(e) => setFormData({ ...formData, servico: e.target.value })}
             className="w-full rounded-xl border border-white/15 bg-white/10 px-4 py-2.5 text-sm text-white focus:border-[oklch(0.72_0.13_78)] focus:outline-none transition [&>option]:bg-slate-900 [&>option]:text-white"
           >
-            {services.map((s) => (
-              <option key={s.name} value={s.name}>
-                {s.name}
+            {serviceNames.map((name) => (
+              <option key={name} value={name}>
+                {name}
               </option>
             ))}
             <option value="Outro / Consultoria">Outro / Consultoria</option>
@@ -863,8 +695,60 @@ function CodeTerminal() {
   );
 }
 
+// ─── Static data that doesn't change ─────────────────────────────────────────
+const addons = [
+  { name: "Registo de Domínio", price: "Conforme fornecedor" },
+  { name: "Hospedagem Web (anual)", price: "80.000 – 250.000" },
+  { name: "Manutenção Mensal", price: "30.000 – 150.000" },
+  { name: "SEO Básico", price: "80.000 – 250.000" },
+  { name: "Criação de Logótipo", price: "80.000 – 300.000" },
+];
+
+const reasons = [
+  {
+    icon: Sparkles,
+    title: "Preços competitivos",
+    desc: "Qualidade a preços justos para o mercado angolano.",
+  },
+  {
+    icon: Users,
+    title: "Equipa dedicada",
+    desc: "Profissionais focados no sucesso do seu projecto.",
+  },
+  {
+    icon: Zap,
+    title: "Tecnologia actualizada",
+    desc: "Stacks modernas, seguras e de alta performance.",
+  },
+  { icon: Wrench, title: "Suporte pós-lançamento", desc: "Acompanhamento contínuo e manutenção." },
+  { icon: Clock, title: "Prazos cumpridos", desc: "Compromisso rigoroso com as datas acordadas." },
+  { icon: Shield, title: "Soluções à medida", desc: "Cada projecto personalizado ao seu negócio." },
+];
+
 function Landing() {
-  const [selectedService, setSelectedService] = useState<string>("Landing Page");
+  // Load dynamic data from admin store
+  const [services, setServices] = useState<ServiceItem[]>(() => adminStore.getServices());
+  const [portfolio, setPortfolio] = useState<PortfolioItem[]>(() => adminStore.getPortfolio());
+  const [settings, setSettings] = useState<SiteSettings>(() => adminStore.getSettings());
+  const [selectedService, setSelectedService] = useState<string>(
+    () => adminStore.getServices()[0]?.name ?? "Landing Page",
+  );
+
+  // Reload from store when window gains focus (admin may have saved changes)
+  useEffect(() => {
+    function onFocus() {
+      setServices(adminStore.getServices());
+      setPortfolio(adminStore.getPortfolio());
+      setSettings(adminStore.getSettings());
+    }
+    window.addEventListener("focus", onFocus);
+    return () => window.removeEventListener("focus", onFocus);
+  }, []);
+
+  const whatsapp = settings.whatsapp;
+  const email = settings.email;
+  const whatsappUrl = `https://wa.me/244${whatsapp}?text=${encodeURIComponent("Olá ByteKwanza! Gostaria de um orçamento.")}`;
+  const serviceNames = services.map((s) => s.name);
 
   const handleSelectService = (serviceName?: string) => {
     if (serviceName) {
@@ -932,7 +816,7 @@ function Landing() {
             </p>
             <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row sm:flex-wrap gap-3">
               <a
-                href={WHATSAPP_URL}
+                href={whatsappUrl}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-[oklch(0.72_0.13_78)] px-6 py-3 text-sm font-semibold text-[oklch(0.2_0.04_258)] shadow-gold hover:brightness-105 transition"
@@ -947,17 +831,17 @@ function Landing() {
                 Ver serviços
               </a>
             </div>
-            <dl className="mt-8 sm:mt-10 grid grid-cols-3 gap-2 sm:gap-4 max-w-md">
+            <dl className="mt-8 sm:mt-10 flex flex-wrap sm:grid sm:grid-cols-3 gap-2 sm:gap-4 max-w-md">
               {[
                 { k: "6+", v: "Serviços" },
                 { k: "100%", v: "Sob medida" },
                 { k: "AO", v: "Made in Angola" },
               ].map((s) => (
-                <div key={s.v} className="bg-white/5 sm:bg-transparent p-2 sm:p-0 rounded-xl border border-white/10 sm:border-none text-center sm:text-left">
-                  <dt className="text-xl sm:text-2xl font-display font-bold text-[oklch(0.85_0.1_78)]">
+                <div key={s.v} className="flex-1 min-w-[90px] bg-white/5 sm:bg-transparent p-2.5 sm:p-0 rounded-xl border border-white/10 sm:border-none text-center sm:text-left">
+                  <dt className="text-lg sm:text-2xl font-display font-bold text-[oklch(0.85_0.1_78)] leading-tight">
                     {s.k}
                   </dt>
-                  <dd className="text-[10px] sm:text-xs uppercase tracking-wider text-white/60 mt-0.5 sm:mt-1">{s.v}</dd>
+                  <dd className="text-[9px] sm:text-xs uppercase tracking-wider text-white/60 mt-1 whitespace-nowrap leading-tight">{s.v}</dd>
                 </div>
               ))}
             </dl>
@@ -983,7 +867,7 @@ function Landing() {
 
         <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {services.map((s) => {
-            const Icon = s.icon;
+            const Icon = resolveIcon(s.icon);
             return (
               <article
                 key={s.name}
@@ -1199,7 +1083,7 @@ function Landing() {
 
               <div className="mt-8 flex flex-wrap gap-3">
                 <a
-                  href={WHATSAPP_URL}
+                  href={whatsappUrl}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 rounded-full bg-[oklch(0.72_0.13_78)] px-6 py-3 text-sm font-semibold text-[oklch(0.2_0.04_258)] shadow-gold hover:brightness-105 transition"
@@ -1208,7 +1092,7 @@ function Landing() {
                   WhatsApp
                 </a>
                 <a
-                  href={`mailto:${EMAIL}`}
+                  href={`mailto:${email}`}
                   className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-6 py-3 text-sm font-semibold hover:bg-white/10 transition"
                 >
                   <Mail className="h-4 w-4" />
@@ -1222,7 +1106,11 @@ function Landing() {
                 <Send className="h-5 w-5" /> Enviar Mensagem Directa
               </h3>
               
-              <ContactForm selectedService={selectedService} />
+              <ContactForm
+                selectedService={selectedService}
+                whatsapp={whatsapp}
+                serviceNames={serviceNames}
+              />
 
               <div className="mt-8 pt-6 border-t border-white/10 grid sm:grid-cols-2 gap-4">
                 <div className="flex items-center gap-3">
@@ -1232,12 +1120,12 @@ function Landing() {
                   <div>
                     <p className="text-[10px] uppercase tracking-widest text-white/50">WhatsApp Directo</p>
                     <a
-                      href={WHATSAPP_URL}
+                      href={whatsappUrl}
                       target="_blank"
                       rel="noreferrer"
                       className="text-sm font-semibold hover:text-[oklch(0.85_0.1_78)]"
                     >
-                      +244 957 455 005
+                      +244 {whatsapp}
                     </a>
                   </div>
                 </div>
@@ -1248,10 +1136,10 @@ function Landing() {
                   <div className="min-w-0">
                     <p className="text-[10px] uppercase tracking-widest text-white/50">Email</p>
                     <a
-                      href={`mailto:${EMAIL}`}
+                      href={`mailto:${email}`}
                       className="text-sm font-semibold truncate block hover:text-[oklch(0.85_0.1_78)]"
                     >
-                      {EMAIL}
+                      {email}
                     </a>
                   </div>
                 </div>
@@ -1275,7 +1163,15 @@ function Landing() {
           <p className="text-xs text-muted-foreground">
             © {new Date().getFullYear()} ByteKwanza — Soluções digitais feitas em Angola.
           </p>
-          <p className="text-xs text-muted-foreground/60">NIF: 5003198294</p>
+          <div className="flex items-center gap-4">
+            <p className="text-xs text-muted-foreground/60">NIF: {settings.nif}</p>
+            <a
+              href="/admin"
+              className="text-xs text-muted-foreground/30 hover:text-muted-foreground/60 transition"
+            >
+              Admin
+            </a>
+          </div>
         </div>
       </footer>
     </div>

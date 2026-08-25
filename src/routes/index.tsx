@@ -60,7 +60,7 @@ const WHATSAPP = "957455005";
 const WHATSAPP_URL = `https://wa.me/244${WHATSAPP}?text=${encodeURIComponent(
   "Olá ByteKwanza! Gostaria de um orçamento.",
 )}`;
-const EMAIL = "redaccao.semfiltros.com";
+const EMAIL = "servicos.ivanlima@gmail.com";
 
 const services = [
   {

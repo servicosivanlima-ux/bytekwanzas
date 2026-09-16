@@ -37,6 +37,8 @@ import {
   Layers,
   Boxes,
   Lock,
+  Menu,
+  X,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -770,6 +772,7 @@ function Landing() {
   const [portfolio, setPortfolio] = useState<PortfolioItem[]>(() => adminStore.getPortfolio());
   const [settings, setSettings] = useState<SiteSettings>(() => adminStore.getSettings());
   const [billingCycle, setBillingCycle] = useState<"annual" | "project">("annual");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [selectedService, setSelectedService] = useState<string>(
     () => adminStore.getServices()[0]?.name ?? "Landing Page",
   );
@@ -796,6 +799,7 @@ function Landing() {
       setSelectedService(serviceName);
     }
     setSelectedBilling(cycle);
+    setMobileMenuOpen(false);
     const element = document.getElementById("contacto");
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
@@ -830,14 +834,74 @@ function Landing() {
               Contacto
             </a>
           </nav>
-          <button
-            onClick={() => handleSelectService()}
-            className="inline-flex items-center gap-2 rounded-full bg-gradient-brand px-4 py-2 text-sm font-semibold text-primary-foreground shadow-brand hover:opacity-95 transition cursor-pointer"
-          >
-            Orçamento
-            <ArrowRight className="h-4 w-4" />
-          </button>
+
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => handleSelectService()}
+              className="hidden sm:inline-flex items-center gap-2 rounded-full bg-gradient-brand px-4 py-2 text-sm font-semibold text-primary-foreground shadow-brand hover:opacity-95 transition cursor-pointer"
+            >
+              Orçamento
+              <ArrowRight className="h-4 w-4" />
+            </button>
+            <button
+              onClick={() => setMobileMenuOpen((o) => !o)}
+              className="md:hidden p-2 rounded-xl border border-border text-foreground hover:bg-secondary transition"
+              aria-label="Abrir Menu"
+            >
+              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+          </div>
         </div>
+
+        {/* Mobile Navigation Drawer */}
+        {mobileMenuOpen && (
+          <div className="md:hidden border-b border-border bg-background/95 backdrop-blur-xl px-4 py-5 space-y-4 animate-in fade-in slide-in-from-top-2">
+            <nav className="flex flex-col space-y-3 text-sm font-medium">
+              <a
+                href="#servicos"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-2 rounded-lg hover:bg-secondary transition"
+              >
+                Serviços
+              </a>
+              <a
+                href="#extras"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-2 rounded-lg hover:bg-secondary transition"
+              >
+                Extras
+              </a>
+              <a
+                href="#portfolio"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-2 rounded-lg hover:bg-secondary transition"
+              >
+                Portfólio
+              </a>
+              <a
+                href="#porque"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-2 rounded-lg hover:bg-secondary transition"
+              >
+                Porquê nós
+              </a>
+              <a
+                href="#contacto"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-2 rounded-lg hover:bg-secondary transition"
+              >
+                Contacto
+              </a>
+            </nav>
+            <button
+              onClick={() => handleSelectService()}
+              className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-gradient-brand px-4 py-2.5 text-sm font-bold text-primary-foreground shadow-brand cursor-pointer"
+            >
+              Solicitar Orçamento
+              <ArrowRight className="h-4 w-4" />
+            </button>
+          </div>
+        )}
       </header>
 
       {/* Hero */}

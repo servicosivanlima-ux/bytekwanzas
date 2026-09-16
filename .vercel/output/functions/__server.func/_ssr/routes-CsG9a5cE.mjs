@@ -1,8 +1,8 @@
 import { r as __toESM } from "../_runtime.mjs";
-import { t as adminStore } from "./admin-store-CfaAvsUO.mjs";
+import { t as adminStore } from "./admin-store-DT50bn6G.mjs";
 import { n as require_jsx_runtime, r as require_react } from "../_libs/react+tanstack__react-query.mjs";
-import { A as Globe, C as Lock, D as Hotel, F as Cog, G as Boxes, H as Check, I as CodeXml, K as ArrowRight, L as Cloud, N as ExternalLink, P as Database, R as Clock, T as Layers, U as Building2, _ as PanelsTopLeft, a as Users, b as MessageCircle, c as Sparkles, d as Shield, i as UtensilsCrossed, k as GraduationCap, l as Smartphone, m as Send, r as Wrench, t as Zap, u as ShoppingCart, v as Newspaper, x as Mail, y as Monitor } from "../_libs/lucide-react.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-Indu78J5.js
+import { A as GraduationCap, E as Layers, F as Database, I as Cog, K as Boxes, L as CodeXml, O as Hotel, P as ExternalLink, R as Cloud, S as Mail, U as Check, W as Building2, _ as PanelsTopLeft, a as Users, b as MessageCircle, c as Sparkles, d as Shield, i as UtensilsCrossed, j as Globe, l as Smartphone, m as Send, n as X, q as ArrowRight, r as Wrench, t as Zap, u as ShoppingCart, v as Newspaper, w as Lock, x as Menu, y as Monitor, z as Clock } from "../_libs/lucide-react.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-CsG9a5cE.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var ICON_MAP = {
@@ -1143,6 +1143,7 @@ function Landing() {
 	const [portfolio, setPortfolio] = (0, import_react.useState)(() => adminStore.getPortfolio());
 	const [settings, setSettings] = (0, import_react.useState)(() => adminStore.getSettings());
 	const [billingCycle, setBillingCycle] = (0, import_react.useState)("annual");
+	const [mobileMenuOpen, setMobileMenuOpen] = (0, import_react.useState)(false);
 	const [selectedService, setSelectedService] = (0, import_react.useState)(() => adminStore.getServices()[0]?.name ?? "Landing Page");
 	const [selectedBilling, setSelectedBilling] = (0, import_react.useState)("annual");
 	(0, import_react.useEffect)(() => {
@@ -1161,15 +1162,16 @@ function Landing() {
 	const handleSelectService = (serviceName, cycle = billingCycle) => {
 		if (serviceName) setSelectedService(serviceName);
 		setSelectedBilling(cycle);
+		setMobileMenuOpen(false);
 		const element = document.getElementById("contacto");
 		if (element) element.scrollIntoView({ behavior: "smooth" });
 	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "min-h-screen bg-background text-foreground",
 		children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("header", {
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
 				className: "sticky top-0 z-40 backdrop-blur-md bg-background/80 border-b border-border/60",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "mx-auto max-w-7xl px-4 sm:px-6 h-16 flex items-center justify-between",
 					children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
@@ -1217,13 +1219,62 @@ function Landing() {
 								})
 							]
 						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-							onClick: () => handleSelectService(),
-							className: "inline-flex items-center gap-2 rounded-full bg-gradient-brand px-4 py-2 text-sm font-semibold text-primary-foreground shadow-brand hover:opacity-95 transition cursor-pointer",
-							children: ["Orçamento", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowRight, { className: "h-4 w-4" })]
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex items-center gap-3",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+								onClick: () => handleSelectService(),
+								className: "hidden sm:inline-flex items-center gap-2 rounded-full bg-gradient-brand px-4 py-2 text-sm font-semibold text-primary-foreground shadow-brand hover:opacity-95 transition cursor-pointer",
+								children: ["Orçamento", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowRight, { className: "h-4 w-4" })]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								onClick: () => setMobileMenuOpen((o) => !o),
+								className: "md:hidden p-2 rounded-xl border border-border text-foreground hover:bg-secondary transition",
+								"aria-label": "Abrir Menu",
+								children: mobileMenuOpen ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(X, { className: "h-5 w-5" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Menu, { className: "h-5 w-5" })
+							})]
 						})
 					]
-				})
+				}), mobileMenuOpen && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "md:hidden border-b border-border bg-background/95 backdrop-blur-xl px-4 py-5 space-y-4 animate-in fade-in slide-in-from-top-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("nav", {
+						className: "flex flex-col space-y-3 text-sm font-medium",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+								href: "#servicos",
+								onClick: () => setMobileMenuOpen(false),
+								className: "px-3 py-2 rounded-lg hover:bg-secondary transition",
+								children: "Serviços"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+								href: "#extras",
+								onClick: () => setMobileMenuOpen(false),
+								className: "px-3 py-2 rounded-lg hover:bg-secondary transition",
+								children: "Extras"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+								href: "#portfolio",
+								onClick: () => setMobileMenuOpen(false),
+								className: "px-3 py-2 rounded-lg hover:bg-secondary transition",
+								children: "Portfólio"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+								href: "#porque",
+								onClick: () => setMobileMenuOpen(false),
+								className: "px-3 py-2 rounded-lg hover:bg-secondary transition",
+								children: "Porquê nós"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+								href: "#contacto",
+								onClick: () => setMobileMenuOpen(false),
+								className: "px-3 py-2 rounded-lg hover:bg-secondary transition",
+								children: "Contacto"
+							})
+						]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+						onClick: () => handleSelectService(),
+						className: "w-full inline-flex items-center justify-center gap-2 rounded-full bg-gradient-brand px-4 py-2.5 text-sm font-bold text-primary-foreground shadow-brand cursor-pointer",
+						children: ["Solicitar Orçamento", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowRight, { className: "h-4 w-4" })]
+					})]
+				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("section", {
 				id: "top",

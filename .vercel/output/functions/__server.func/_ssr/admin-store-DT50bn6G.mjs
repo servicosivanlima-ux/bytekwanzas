@@ -1,4 +1,4 @@
-//#region node_modules/.nitro/vite/services/ssr/assets/admin-store-CfaAvsUO.js
+//#region node_modules/.nitro/vite/services/ssr/assets/admin-store-DT50bn6G.js
 var STORAGE_KEY = "bytekwanza_admin_store";
 var DEFAULT_SETTINGS = {
 	whatsapp: "957455005",
@@ -233,25 +233,41 @@ function loadStore() {
 		const raw = localStorage.getItem(STORAGE_KEY);
 		if (!raw) return getDefaultStore();
 		const parsed = JSON.parse(raw);
-		const servicesLoaded = (parsed.services ?? DEFAULT_SERVICES).map((svc) => {
-			const defaultMatch = DEFAULT_SERVICES.find((d) => d.id === svc.id);
-			let price = svc.price;
-			let annualPrice = svc.annualPrice || defaultMatch?.annualPrice || "";
-			if (svc.id === "landing-page" && (svc.price === "120.000 – 180.000" || !svc.price)) {
+		const loadedSvcMap = new Map((parsed.services || []).map((s) => [s.id, s]));
+		const servicesMerged = DEFAULT_SERVICES.map((defSvc) => {
+			const existing = loadedSvcMap.get(defSvc.id);
+			if (!existing) return defSvc;
+			let price = existing.price;
+			let annualPrice = existing.annualPrice || defSvc.annualPrice || "";
+			if (existing.id === "landing-page" && (existing.price === "120.000 – 180.000" || !existing.price)) {
 				price = "60.000 – 120.000";
 				annualPrice = "50.000 – 95.000";
 			}
 			return {
-				...svc,
+				...existing,
 				price,
 				annualPrice,
-				annualDiscount: svc.annualDiscount || defaultMatch?.annualDiscount || ""
+				annualDiscount: existing.annualDiscount || defSvc.annualDiscount || ""
 			};
+		});
+		(parsed.services || []).forEach((s) => {
+			if (!DEFAULT_SERVICES.some((d) => d.id === s.id)) servicesMerged.push(s);
+		});
+		const loadedPortMap = new Map((parsed.portfolio || []).map((p) => [p.id, p]));
+		const portfolioMerged = DEFAULT_PORTFOLIO.map((defItem) => {
+			const existing = loadedPortMap.get(defItem.id);
+			return existing ? {
+				...defItem,
+				...existing
+			} : defItem;
+		});
+		(parsed.portfolio || []).forEach((p) => {
+			if (!DEFAULT_PORTFOLIO.some((d) => d.id === p.id)) portfolioMerged.push(p);
 		});
 		return {
 			admin: parsed.admin ?? null,
-			services: servicesLoaded,
-			portfolio: parsed.portfolio ?? DEFAULT_PORTFOLIO,
+			services: servicesMerged,
+			portfolio: portfolioMerged,
 			settings: {
 				...DEFAULT_SETTINGS,
 				...parsed.settings ?? {}

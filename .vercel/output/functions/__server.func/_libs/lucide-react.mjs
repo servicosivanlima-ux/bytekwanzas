@@ -732,6 +732,26 @@ var Mail = createLucideIcon("mail", [["path", {
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
+var Menu = createLucideIcon("menu", [
+	["path", {
+		d: "M4 5h16",
+		key: "1tepv9"
+	}],
+	["path", {
+		d: "M4 12h16",
+		key: "1lakjw"
+	}],
+	["path", {
+		d: "M4 19h16",
+		key: "1djgab"
+	}]
+]);
+/**
+* @license lucide-react v0.575.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
 var MessageCircle = createLucideIcon("message-circle", [["path", {
 	d: "M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719",
 	key: "1sd12s"
@@ -1092,4 +1112,4 @@ var Zap = createLucideIcon("zap", [["path", {
 	key: "1xq2db"
 }]]);
 //#endregion
-export { Globe as A, ChevronUp as B, Lock as C, Hotel as D, Image as E, Cog as F, Boxes as G, Check as H, CodeXml as I, ArrowRight as K, Cloud as L, EyeOff as M, ExternalLink as N, GripVertical as O, Database as P, Clock as R, LogOut as S, Layers as T, Building2 as U, ChevronDown as V, Briefcase as W, PanelsTopLeft as _, Users as a, MessageCircle as b, Sparkles as c, Shield as d, ShieldCheck as f, Plus as g, Save as h, UtensilsCrossed as i, Eye as j, GraduationCap as k, Smartphone as l, Send as m, X as n, Trash2 as o, Settings as p, Wrench as r, Star as s, Zap as t, ShoppingCart as u, Newspaper as v, LoaderCircle as w, Mail as x, Monitor as y, CircleAlert as z };
+export { GraduationCap as A, CircleAlert as B, LogOut as C, Image as D, Layers as E, Database as F, Briefcase as G, ChevronDown as H, Cog as I, Boxes as K, CodeXml as L, Eye as M, EyeOff as N, Hotel as O, ExternalLink as P, Cloud as R, Mail as S, LoaderCircle as T, Check as U, ChevronUp as V, Building2 as W, PanelsTopLeft as _, Users as a, MessageCircle as b, Sparkles as c, Shield as d, ShieldCheck as f, Plus as g, Save as h, UtensilsCrossed as i, Globe as j, GripVertical as k, Smartphone as l, Send as m, X as n, Trash2 as o, Settings as p, ArrowRight as q, Wrench as r, Star as s, Zap as t, ShoppingCart as u, Newspaper as v, Lock as w, Menu as x, Monitor as y, Clock as z };

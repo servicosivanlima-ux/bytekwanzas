@@ -389,9 +389,23 @@ function ServiceCard({
           </div>
           <div className="grid sm:grid-cols-2 gap-4">
             <Field
-              label="Preço (AOA)"
+              label="Preço Pontual / Projeto (AOA)"
               value={local.price}
               onChange={(v) => setLocal({ ...local, price: v })}
+            />
+            <Field
+              label="Preço Anual com Desconto (AOA)"
+              value={local.annualPrice || ""}
+              onChange={(v) => setLocal({ ...local, annualPrice: v })}
+              placeholder="ex: 95.000 – 145.000"
+            />
+          </div>
+          <div className="grid sm:grid-cols-2 gap-4">
+            <Field
+              label="Desconto Anual (Etiqueta)"
+              value={local.annualDiscount || ""}
+              onChange={(v) => setLocal({ ...local, annualDiscount: v })}
+              placeholder="ex: -20% Anual"
             />
             <div>
               <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-white/50">

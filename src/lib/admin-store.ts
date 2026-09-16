@@ -13,6 +13,8 @@ export interface ServiceItem {
   name: string;
   tag: string;
   price: string;
+  annualPrice?: string;
+  annualDiscount?: string;
   desc: string;
   features: string[];
   deadline: string;
@@ -66,13 +68,16 @@ export const DEFAULT_SERVICES: ServiceItem[] = [
     icon: "Layout",
     name: "Landing Page",
     tag: "1 página",
-    price: "120.000 – 180.000",
+    price: "60.000 – 120.000",
+    annualPrice: "50.000 – 95.000",
+    annualDiscount: "-20% Anual",
     desc: "Página única de alto impacto para captar leads e converter visitantes.",
     features: [
       "Design responsivo e moderno",
       "Formulário de captura de contactos",
       "Optimização mobile e tablet",
       "Integração com redes sociais",
+      "Inclui hospedagem + domínio .ao (no plano anual)",
     ],
     deadline: "5 a 10 dias úteis",
     ideal: "Campanhas, lançamentos de produtos e eventos.",
@@ -84,12 +89,15 @@ export const DEFAULT_SERVICES: ServiceItem[] = [
     name: "Site Institucional",
     tag: "até 5 páginas",
     price: "250.000 – 450.000",
+    annualPrice: "200.000 – 360.000",
+    annualDiscount: "-20% Anual",
     desc: "Presença profissional online sólida e credível.",
     features: [
       "Até 5 páginas personalizadas",
       "Design profissional e responsivo",
       "Painel de gestão de conteúdo",
       "Formulários integrados",
+      "Inclui manutenção + SSL + backup (no plano anual)",
     ],
     deadline: "10 a 20 dias úteis",
     ideal: "PMEs, consultores, profissionais liberais e ONGs.",
@@ -101,12 +109,15 @@ export const DEFAULT_SERVICES: ServiceItem[] = [
     name: "Site Empresarial",
     tag: "6 a 10 páginas",
     price: "450.000 – 800.000",
+    annualPrice: "370.000 – 650.000",
+    annualDiscount: "-18% Anual",
     desc: "Plataforma completa para empresas em crescimento.",
     features: [
       "Até 10 páginas com conteúdo à medida",
       "Blog integrado",
       "Área de clientes / membros",
       "Galeria de portefólio",
+      "Suporte técnico prioritário (no plano anual)",
     ],
     deadline: "15 a 30 dias úteis",
     ideal: "Escritórios de advocacia, clínicas e consultorias.",
@@ -118,12 +129,15 @@ export const DEFAULT_SERVICES: ServiceItem[] = [
     name: "Loja Online",
     tag: "E-commerce",
     price: "900.000 – 2.000.000+",
+    annualPrice: "750.000 – 1.650.000+",
+    annualDiscount: "-15% Anual",
     desc: "Venda 24/7 com gestão completa e pagamentos integrados.",
     features: [
       "Catálogo completo de produtos",
       "Carrinho e sistema de encomendas",
       "Multicaixa Express e transferências",
       "Gestão de stock e painel admin",
+      "Manutenção e monitorização 24/7 (no plano anual)",
     ],
     deadline: "20 a 45 dias úteis",
     ideal: "Lojas físicas, marcas, artesãos e empreendedores.",
@@ -135,12 +149,15 @@ export const DEFAULT_SERVICES: ServiceItem[] = [
     name: "Portal de Notícias",
     tag: "Editorial",
     price: "1.200.000 – 3.000.000+",
+    annualPrice: "1.000.000 – 2.450.000+",
+    annualDiscount: "-18% Anual",
     desc: "Plataforma editorial robusta preparada para tráfego elevado.",
     features: [
       "Publicação e gestão editorial",
       "Categorias, tags e comentários",
       "Painel multi-editor com permissões",
       "Optimização para escala",
+      "Servidor dedicado e suporte editorial (no plano anual)",
     ],
     deadline: "30 a 60 dias úteis",
     ideal: "Media, associações e portais temáticos.",
@@ -152,12 +169,15 @@ export const DEFAULT_SERVICES: ServiceItem[] = [
     name: "Sistema Web Personalizado",
     tag: "Sob medida",
     price: "A partir de 2.500.000",
+    annualPrice: "A partir de 2.100.000",
+    annualDiscount: "-15% Licença/Ano",
     desc: "Solução à medida para automatizar processos do seu negócio.",
     features: [
       "Análise de requisitos e arquitectura",
       "Funcionalidades sob medida",
       "Base de dados segura e optimizada",
       "Documentação técnica completa",
+      "SLA de suporte contínuo (no plano anual)",
     ],
     deadline: "45 a 90+ dias úteis",
     ideal: "Gestão interna, plataformas B2B e automação.",
@@ -169,6 +189,8 @@ export const DEFAULT_SERVICES: ServiceItem[] = [
     name: "Sistema Escolar",
     tag: "Educação",
     price: "1.500.000 – 4.000.000+",
+    annualPrice: "1.250.000 – 3.300.000+",
+    annualDiscount: "-17% Anual",
     desc: "Plataforma completa de gestão escolar: matrículas, notas, turmas e comunicação com encarregados.",
     features: [
       "Matrículas e gestão de alunos",
@@ -177,6 +199,7 @@ export const DEFAULT_SERVICES: ServiceItem[] = [
       "Portal do encarregado de educação",
       "Emissão de declarações e boletins",
       "Gestão de turmas e horários",
+      "Formação de utilizadores e suporte anual incluído",
     ],
     deadline: "45 a 90 dias úteis",
     ideal: "Escolas primárias, colégios privados e institutos.",
@@ -188,6 +211,8 @@ export const DEFAULT_SERVICES: ServiceItem[] = [
     name: "Sistema de Hospedaria",
     tag: "Hotelaria",
     price: "1.800.000 – 5.000.000+",
+    annualPrice: "1.500.000 – 4.100.000+",
+    annualDiscount: "-18% Anual",
     desc: "Gestão completa de reservas, check-in/out, quartos e facturação para hotéis e residenciais.",
     features: [
       "Reservas online e gestão de quartos",
@@ -196,6 +221,7 @@ export const DEFAULT_SERVICES: ServiceItem[] = [
       "Facturação e relatórios financeiros",
       "Gestão de funcionários e turnos",
       "Integração com canais de reserva",
+      "Manutenção preventiva de sistema e licença anual",
     ],
     deadline: "45 a 90 dias úteis",
     ideal: "Hotéis, residenciais, pensões e apart-hotéis.",
@@ -207,6 +233,8 @@ export const DEFAULT_SERVICES: ServiceItem[] = [
     name: "Sistema de Restaurante",
     tag: "F&B",
     price: "800.000 – 2.500.000+",
+    annualPrice: "680.000 – 2.050.000+",
+    annualDiscount: "-15% Anual",
     desc: "PDV, gestão de mesas, pedidos em tempo real, stock e relatórios de vendas para restaurantes.",
     features: [
       "Ponto de venda (PDV) táctil",
@@ -215,6 +243,7 @@ export const DEFAULT_SERVICES: ServiceItem[] = [
       "Controlo de stock e ingredientes",
       "Relatórios de vendas e facturação",
       "Gestão de colaboradores e turnos",
+      "Actualizações de software e suporte técnico anual",
     ],
     deadline: "30 a 60 dias úteis",
     ideal: "Restaurantes, cafés, snacks e bares.",
@@ -261,9 +290,24 @@ function loadStore(): AdminStore {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return getDefaultStore();
     const parsed = JSON.parse(raw) as Partial<AdminStore>;
+    const servicesLoaded = (parsed.services ?? DEFAULT_SERVICES).map((svc) => {
+      const defaultMatch = DEFAULT_SERVICES.find((d) => d.id === svc.id);
+      let price = svc.price;
+      let annualPrice = svc.annualPrice || defaultMatch?.annualPrice || "";
+      if (svc.id === "landing-page" && (svc.price === "120.000 – 180.000" || !svc.price)) {
+        price = "60.000 – 120.000";
+        annualPrice = "50.000 – 95.000";
+      }
+      return {
+        ...svc,
+        price,
+        annualPrice,
+        annualDiscount: svc.annualDiscount || defaultMatch?.annualDiscount || "",
+      };
+    });
     return {
       admin: parsed.admin ?? null,
-      services: parsed.services ?? DEFAULT_SERVICES,
+      services: servicesLoaded,
       portfolio: parsed.portfolio ?? DEFAULT_PORTFOLIO,
       settings: { ...DEFAULT_SETTINGS, ...(parsed.settings ?? {}) },
     };

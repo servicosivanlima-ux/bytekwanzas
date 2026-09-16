@@ -1,8 +1,8 @@
 import { r as __toESM } from "../_runtime.mjs";
-import { t as adminStore } from "./admin-store-f2U4Abvh.mjs";
+import { t as adminStore } from "./admin-store-CfaAvsUO.mjs";
 import { n as require_jsx_runtime, r as require_react } from "../_libs/react+tanstack__react-query.mjs";
 import { B as ChevronUp, C as Lock, E as Image, M as EyeOff, N as ExternalLink, O as GripVertical, S as LogOut, V as ChevronDown, W as Briefcase, f as ShieldCheck, g as Plus, h as Save, j as Eye, n as X, o as Trash2, p as Settings, s as Star, w as LoaderCircle, z as CircleAlert } from "../_libs/lucide-react.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/admin-KxihzA7i.js
+//#region node_modules/.nitro/vite/services/ssr/assets/admin-CKBiAnNb.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function uid() {
@@ -288,12 +288,32 @@ function ServiceCard({ svc, onUpdate, onDelete }) {
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "grid sm:grid-cols-2 gap-4",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Field, {
-						label: "Preço (AOA)",
+						label: "Preço Pontual / Projeto (AOA)",
 						value: local.price,
 						onChange: (v) => setLocal({
 							...local,
 							price: v
 						})
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Field, {
+						label: "Preço Anual com Desconto (AOA)",
+						value: local.annualPrice || "",
+						onChange: (v) => setLocal({
+							...local,
+							annualPrice: v
+						}),
+						placeholder: "ex: 95.000 – 145.000"
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "grid sm:grid-cols-2 gap-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Field, {
+						label: "Desconto Anual (Etiqueta)",
+						value: local.annualDiscount || "",
+						onChange: (v) => setLocal({
+							...local,
+							annualDiscount: v
+						}),
+						placeholder: "ex: -20% Anual"
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", {
 						className: "mb-1 block text-xs font-semibold uppercase tracking-wider text-white/50",
 						children: "Ícone"

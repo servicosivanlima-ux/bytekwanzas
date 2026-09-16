@@ -1,8 +1,8 @@
 import { r as __toESM } from "../_runtime.mjs";
-import { t as adminStore } from "./admin-store-f2U4Abvh.mjs";
+import { t as adminStore } from "./admin-store-CfaAvsUO.mjs";
 import { n as require_jsx_runtime, r as require_react } from "../_libs/react+tanstack__react-query.mjs";
 import { A as Globe, C as Lock, D as Hotel, F as Cog, G as Boxes, H as Check, I as CodeXml, K as ArrowRight, L as Cloud, N as ExternalLink, P as Database, R as Clock, T as Layers, U as Building2, _ as PanelsTopLeft, a as Users, b as MessageCircle, c as Sparkles, d as Shield, i as UtensilsCrossed, k as GraduationCap, l as Smartphone, m as Send, r as Wrench, t as Zap, u as ShoppingCart, v as Newspaper, x as Mail, y as Monitor } from "../_libs/lucide-react.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-CTm10sS2.js
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-Indu78J5.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var ICON_MAP = {
@@ -719,11 +719,12 @@ var codeSnippets = [
 		]
 	}
 ];
-function ContactForm({ selectedService, whatsapp, serviceNames }) {
+function ContactForm({ selectedService, selectedBilling = "annual", whatsapp, serviceNames }) {
 	const [formData, setFormData] = (0, import_react.useState)({
 		nome: "",
 		empresa: "",
 		servico: selectedService || serviceNames[0] || "Landing Page",
+		modalidade: selectedBilling,
 		mensagem: ""
 	});
 	(0, import_react.useEffect)(() => {
@@ -732,9 +733,16 @@ function ContactForm({ selectedService, whatsapp, serviceNames }) {
 			servico: selectedService
 		}));
 	}, [selectedService]);
+	(0, import_react.useEffect)(() => {
+		setFormData((prev) => ({
+			...prev,
+			modalidade: selectedBilling
+		}));
+	}, [selectedBilling]);
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		const text = `*Nova solicitação de orçamento via site ByteKwanza!* 🚀\n\n*Nome:* ${formData.nome}\n` + (formData.empresa ? `*Empresa:* ${formData.empresa}\n` : "") + `*Serviço de interesse:* ${formData.servico}\n\n*Mensagem:* ${formData.mensagem || "Sem mensagem adicional."}`;
+		const billingText = formData.modalidade === "annual" ? "Plano Anual com Desconto" : "Pagamento Único / Projeto";
+		const text = `*Nova solicitação de orçamento via site ByteKwanza!* 🚀\n\n*Nome:* ${formData.nome}\n` + (formData.empresa ? `*Empresa:* ${formData.empresa}\n` : "") + `*Serviço de interesse:* ${formData.servico}\n*Modalidade:* ${billingText}\n\n*Mensagem:* ${formData.mensagem || "Sem mensagem adicional."}`;
 		const url = `https://wa.me/244${whatsapp}?text=${encodeURIComponent(text)}`;
 		window.open(url, "_blank");
 	};
@@ -789,6 +797,29 @@ function ContactForm({ selectedService, whatsapp, serviceNames }) {
 					})]
 				})] })]
 			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", {
+				className: "block text-xs font-semibold uppercase tracking-wider text-white/70 mb-1.5",
+				children: "Modalidade de Pagamento"
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "grid grid-cols-2 gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+					type: "button",
+					onClick: () => setFormData({
+						...formData,
+						modalidade: "annual"
+					}),
+					className: `rounded-xl border px-3 py-2 text-xs font-semibold transition cursor-pointer text-center ${formData.modalidade === "annual" ? "border-[oklch(0.72_0.13_78)] bg-[oklch(0.72_0.13_78)]/20 text-white font-bold" : "border-white/15 bg-white/5 text-white/60 hover:bg-white/10"}`,
+					children: "Plano Anual (com Desconto) ✨"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+					type: "button",
+					onClick: () => setFormData({
+						...formData,
+						modalidade: "project"
+					}),
+					className: `rounded-xl border px-3 py-2 text-xs font-semibold transition cursor-pointer text-center ${formData.modalidade === "project" ? "border-[oklch(0.72_0.13_78)] bg-[oklch(0.72_0.13_78)]/20 text-white font-bold" : "border-white/15 bg-white/5 text-white/60 hover:bg-white/10"}`,
+					children: "Pagamento Único / Projeto"
+				})]
+			})] }),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", {
 				className: "block text-xs font-semibold uppercase tracking-wider text-white/70 mb-1.5",
 				children: "Detalhes da sua Ideia ou Projeto"
@@ -1111,7 +1142,9 @@ function Landing() {
 	const [services, setServices] = (0, import_react.useState)(() => adminStore.getServices());
 	const [portfolio, setPortfolio] = (0, import_react.useState)(() => adminStore.getPortfolio());
 	const [settings, setSettings] = (0, import_react.useState)(() => adminStore.getSettings());
+	const [billingCycle, setBillingCycle] = (0, import_react.useState)("annual");
 	const [selectedService, setSelectedService] = (0, import_react.useState)(() => adminStore.getServices()[0]?.name ?? "Landing Page");
+	const [selectedBilling, setSelectedBilling] = (0, import_react.useState)("annual");
 	(0, import_react.useEffect)(() => {
 		function onFocus() {
 			setServices(adminStore.getServices());
@@ -1125,8 +1158,9 @@ function Landing() {
 	const email = settings.email;
 	const whatsappUrl = `https://wa.me/244${whatsapp}?text=${encodeURIComponent("Olá ByteKwanza! Gostaria de um orçamento.")}`;
 	const serviceNames = services.map((s) => s.name);
-	const handleSelectService = (serviceName) => {
+	const handleSelectService = (serviceName, cycle = billingCycle) => {
 		if (serviceName) setSelectedService(serviceName);
+		setSelectedBilling(cycle);
 		const element = document.getElementById("contacto");
 		if (element) element.scrollIntoView({ behavior: "smooth" });
 	};
@@ -1231,7 +1265,7 @@ function Landing() {
 							})]
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("dl", {
-							className: "mt-8 sm:mt-10 grid grid-cols-3 gap-2 sm:gap-4 max-w-md",
+							className: "mt-8 sm:mt-10 flex flex-wrap sm:grid sm:grid-cols-3 gap-2 sm:gap-4 max-w-md",
 							children: [
 								{
 									k: "6+",
@@ -1246,12 +1280,12 @@ function Landing() {
 									v: "Made in Angola"
 								}
 							].map((s) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "bg-white/5 sm:bg-transparent p-2 sm:p-0 rounded-xl border border-white/10 sm:border-none text-center sm:text-left",
+								className: "flex-1 min-w-[90px] bg-white/5 sm:bg-transparent p-2.5 sm:p-0 rounded-xl border border-white/10 sm:border-none text-center sm:text-left",
 								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("dt", {
-									className: "text-xl sm:text-2xl font-display font-bold text-[oklch(0.85_0.1_78)]",
+									className: "text-lg sm:text-2xl font-display font-bold text-[oklch(0.85_0.1_78)] leading-tight",
 									children: s.k
 								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("dd", {
-									className: "text-[10px] sm:text-xs uppercase tracking-wider text-white/60 mt-0.5 sm:mt-1",
+									className: "text-[9px] sm:text-xs uppercase tracking-wider text-white/60 mt-1 whitespace-nowrap leading-tight",
 									children: s.v
 								})]
 							}, s.v))
@@ -1262,100 +1296,161 @@ function Landing() {
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
 				id: "servicos",
 				className: "mx-auto max-w-7xl px-4 sm:px-6 py-24",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "max-w-2xl",
-					children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "text-sm font-semibold uppercase tracking-widest text-[oklch(0.55_0.15_258)]",
-							children: "Os nossos serviços"
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
-							className: "mt-3 text-3xl md:text-5xl font-bold",
-							children: "Da ideia ao lançamento — cuidamos de tudo."
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "mt-4 text-muted-foreground",
-							children: "Escolha o plano que melhor se adapta ao seu projecto. Todos os preços em Kwanzas (AOA) e são indicativos."
-						})
-					]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-					className: "mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3",
-					children: services.map((s) => {
-						const Icon = resolveIcon(s.icon);
-						return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", {
-							className: `group relative flex flex-col rounded-2xl border p-5 sm:p-7 transition hover:-translate-y-1 hover:shadow-brand ${s.featured ? "border-[oklch(0.72_0.13_78)]/50 bg-gradient-to-br from-white to-[oklch(0.72_0.13_78)]/5" : "border-border bg-card"}`,
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex flex-col md:flex-row md:items-end justify-between gap-6",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "max-w-2xl",
 							children: [
-								s.featured && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									className: "absolute -top-3 right-4 sm:right-6 rounded-full bg-[oklch(0.72_0.13_78)] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[oklch(0.2_0.04_258)]",
-									children: "Popular"
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "text-sm font-semibold uppercase tracking-widest text-[oklch(0.55_0.15_258)]",
+									children: "Os nossos serviços"
 								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "flex items-center gap-3",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-										className: "grid h-10 w-10 sm:h-11 sm:w-11 place-items-center rounded-xl bg-gradient-brand text-primary-foreground shadow-brand",
-										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, { className: "h-5 w-5" })
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "text-xs font-medium uppercase tracking-wider text-muted-foreground",
-										children: s.tag
-									})]
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
-									className: "mt-4 sm:mt-5 text-lg sm:text-xl font-bold",
-									children: s.name
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+									className: "mt-3 text-3xl md:text-5xl font-bold",
+									children: "Da ideia ao lançamento — cuidamos de tudo."
 								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-									className: "mt-2 text-xs sm:text-sm text-muted-foreground",
-									children: s.desc
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-									className: "mt-5 border-t border-border pt-4 sm:pt-5",
-									children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-										className: "flex flex-wrap items-baseline gap-1",
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-											className: "font-display text-xl sm:text-2xl font-bold break-words",
-											children: s.price
-										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-											className: "text-xs font-medium text-muted-foreground",
-											children: "AOA"
-										})]
-									})
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
-									className: "mt-5 space-y-2 text-sm",
-									children: s.features.map((f) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
-										className: "flex gap-2",
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "mt-0.5 h-4 w-4 flex-none text-[oklch(0.6_0.15_78)]" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-											className: "text-foreground/80",
-											children: f
-										})]
-									}, f))
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "mt-6 space-y-2 text-xs",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-										className: "flex items-center gap-2 text-muted-foreground",
-										children: [
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Clock, { className: "h-3.5 w-3.5" }),
-											" ",
-											s.deadline
-										]
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-										className: "text-muted-foreground",
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-											className: "font-semibold text-foreground/80",
-											children: "Ideal para: "
-										}), s.ideal]
-									})]
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-									onClick: () => handleSelectService(s.name),
-									className: "mt-7 inline-flex items-center justify-center gap-2 rounded-full border border-primary/20 bg-secondary px-4 py-2.5 text-sm font-semibold text-primary hover:bg-primary hover:text-primary-foreground transition cursor-pointer",
-									children: ["Solicitar orçamento", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowRight, { className: "h-4 w-4" })]
+									className: "mt-4 text-muted-foreground",
+									children: "Escolha a modalidade ideal para a sua empresa. Oferecemos opções de investimento único e planos anuais com desconto adaptados ao mercado Angolano actual."
 								})
 							]
-						}, s.name);
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex items-center gap-1 rounded-2xl bg-secondary p-1.5 border border-border self-start md:self-auto shadow-sm",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+								onClick: () => setBillingCycle("annual"),
+								className: `flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-bold transition cursor-pointer ${billingCycle === "annual" ? "bg-gradient-brand text-primary-foreground shadow-brand" : "text-muted-foreground hover:text-foreground"}`,
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Sparkles, { className: "h-3.5 w-3.5" }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Plano Anual Reduzido" }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "rounded-full bg-emerald-500/20 px-2 py-0.5 text-[10px] font-extrabold text-emerald-600 dark:text-emerald-400 border border-emerald-500/30",
+										children: "Até -20%"
+									})
+								]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								onClick: () => setBillingCycle("project"),
+								className: `rounded-xl px-4 py-2.5 text-xs font-semibold transition cursor-pointer ${billingCycle === "project" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`,
+								children: "Pagamento Único / Projeto"
+							})]
+						})]
+					}),
+					billingCycle === "annual" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "mt-6 rounded-2xl border border-[oklch(0.72_0.13_78)]/30 bg-[oklch(0.72_0.13_78)]/10 p-4 text-xs sm:text-sm text-foreground/90 flex items-center gap-3",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Sparkles, { className: "h-5 w-5 text-[oklch(0.72_0.13_78)] flex-none" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", {
+							className: "font-semibold text-foreground",
+							children: "Vantagem do Plano Anual:"
+						}), " Inclui desconto exclusivo no valor do projecto, alojamento web, manutenção contínua e suporte técnico prioritário durante 12 meses."] })]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3",
+						children: services.map((s) => {
+							const Icon = resolveIcon(s.icon);
+							const isAnnual = billingCycle === "annual";
+							const displayPrice = isAnnual && s.annualPrice ? s.annualPrice : s.price;
+							const discountLabel = s.annualDiscount || "-20% Anual";
+							return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", {
+								className: `group relative flex flex-col rounded-2xl border p-5 sm:p-7 transition hover:-translate-y-1 hover:shadow-brand ${s.featured ? "border-[oklch(0.72_0.13_78)]/50 bg-gradient-to-br from-white to-[oklch(0.72_0.13_78)]/5" : "border-border bg-card"}`,
+								children: [
+									s.featured && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "absolute -top-3 right-4 sm:right-6 rounded-full bg-[oklch(0.72_0.13_78)] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[oklch(0.2_0.04_258)]",
+										children: "Popular"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex items-center gap-3",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+											className: "grid h-10 w-10 sm:h-11 sm:w-11 place-items-center rounded-xl bg-gradient-brand text-primary-foreground shadow-brand",
+											children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, { className: "h-5 w-5" })
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-xs font-medium uppercase tracking-wider text-muted-foreground",
+											children: s.tag
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+										className: "mt-4 sm:mt-5 text-lg sm:text-xl font-bold",
+										children: s.name
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "mt-2 text-xs sm:text-sm text-muted-foreground",
+										children: s.desc
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "mt-5 border-t border-border pt-4 sm:pt-5",
+										children: [
+											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+												className: "flex items-center justify-between gap-2 mb-1",
+												children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+													className: "text-[11px] font-semibold uppercase tracking-wider text-muted-foreground",
+													children: isAnnual ? "Plano Anual com Desconto" : "Valor do Projeto (Único)"
+												}), isAnnual && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+													className: "rounded-full bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400",
+													children: discountLabel
+												})]
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+												className: "flex flex-wrap items-baseline gap-1",
+												children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+													className: "font-display text-xl sm:text-2xl font-bold break-words",
+													children: displayPrice
+												}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+													className: "text-xs font-medium text-muted-foreground",
+													children: isAnnual ? "AOA / ano" : "AOA"
+												})]
+											}),
+											!isAnnual && s.annualPrice && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+												className: "mt-1 text-[11px] text-emerald-600 dark:text-emerald-400 font-medium",
+												children: [
+													"💡 Opção Anual Reduzida: ",
+													s.annualPrice,
+													" AOA/ano (",
+													discountLabel,
+													")"
+												]
+											})
+										]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
+										className: "mt-5 space-y-2 text-sm",
+										children: s.features.map((f) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
+											className: "flex gap-2",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "mt-0.5 h-4 w-4 flex-none text-[oklch(0.6_0.15_78)]" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: "text-foreground/80",
+												children: f
+											})]
+										}, f))
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "mt-6 space-y-2 text-xs",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+											className: "flex items-center gap-2 text-muted-foreground",
+											children: [
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Clock, { className: "h-3.5 w-3.5" }),
+												" ",
+												s.deadline
+											]
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+											className: "text-muted-foreground",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: "font-semibold text-foreground/80",
+												children: "Ideal para: "
+											}), s.ideal]
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+										onClick: () => handleSelectService(s.name, billingCycle),
+										className: "mt-7 inline-flex items-center justify-center gap-2 rounded-full border border-primary/20 bg-secondary px-4 py-2.5 text-sm font-semibold text-primary hover:bg-primary hover:text-primary-foreground transition cursor-pointer",
+										children: [
+											"Solicitar orçamento (",
+											billingCycle === "annual" ? "Plano Anual" : "Projeto",
+											")",
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowRight, { className: "h-4 w-4" })
+										]
+									})
+								]
+							}, s.name);
+						})
 					})
-				})]
+				]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("section", {
 				id: "extras",
@@ -1559,6 +1654,7 @@ function Landing() {
 								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ContactForm, {
 									selectedService,
+									selectedBilling,
 									whatsapp,
 									serviceNames
 								}),

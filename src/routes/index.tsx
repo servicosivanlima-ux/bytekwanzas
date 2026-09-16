@@ -347,10 +347,12 @@ const codeSnippets: {
 
 function ContactForm({
   selectedService,
+  selectedBilling = "annual",
   whatsapp,
   serviceNames,
 }: {
   selectedService?: string;
+  selectedBilling?: "project" | "annual";
   whatsapp: string;
   serviceNames: string[];
 }) {
@@ -358,6 +360,7 @@ function ContactForm({
     nome: "",
     empresa: "",
     servico: selectedService || serviceNames[0] || "Landing Page",
+    modalidade: selectedBilling,
     mensagem: "",
   });
 
@@ -367,12 +370,18 @@ function ContactForm({
     }
   }, [selectedService]);
 
+  useEffect(() => {
+    setFormData((prev) => ({ ...prev, modalidade: selectedBilling }));
+  }, [selectedBilling]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const billingText = formData.modalidade === "annual" ? "Plano Anual com Desconto" : "Pagamento Único / Projeto";
     const text = `*Nova solicitação de orçamento via site ByteKwanza!* 🚀\n\n` +
       `*Nome:* ${formData.nome}\n` +
       (formData.empresa ? `*Empresa:* ${formData.empresa}\n` : "") +
-      `*Serviço de interesse:* ${formData.servico}\n\n` +
+      `*Serviço de interesse:* ${formData.servico}\n` +
+      `*Modalidade:* ${billingText}\n\n` +
       `*Mensagem:* ${formData.mensagem || "Sem mensagem adicional."}`;
 
     const url = `https://wa.me/244${whatsapp}?text=${encodeURIComponent(text)}`;
@@ -424,6 +433,36 @@ function ContactForm({
             ))}
             <option value="Outro / Consultoria">Outro / Consultoria</option>
           </select>
+        </div>
+      </div>
+
+      <div>
+        <label className="block text-xs font-semibold uppercase tracking-wider text-white/70 mb-1.5">
+          Modalidade de Pagamento
+        </label>
+        <div className="grid grid-cols-2 gap-2">
+          <button
+            type="button"
+            onClick={() => setFormData({ ...formData, modalidade: "annual" })}
+            className={`rounded-xl border px-3 py-2 text-xs font-semibold transition cursor-pointer text-center ${
+              formData.modalidade === "annual"
+                ? "border-[oklch(0.72_0.13_78)] bg-[oklch(0.72_0.13_78)]/20 text-white font-bold"
+                : "border-white/15 bg-white/5 text-white/60 hover:bg-white/10"
+            }`}
+          >
+            Plano Anual (com Desconto) ✨
+          </button>
+          <button
+            type="button"
+            onClick={() => setFormData({ ...formData, modalidade: "project" })}
+            className={`rounded-xl border px-3 py-2 text-xs font-semibold transition cursor-pointer text-center ${
+              formData.modalidade === "project"
+                ? "border-[oklch(0.72_0.13_78)] bg-[oklch(0.72_0.13_78)]/20 text-white font-bold"
+                : "border-white/15 bg-white/5 text-white/60 hover:bg-white/10"
+            }`}
+          >
+            Pagamento Único / Projeto
+          </button>
         </div>
       </div>
 
@@ -730,9 +769,11 @@ function Landing() {
   const [services, setServices] = useState<ServiceItem[]>(() => adminStore.getServices());
   const [portfolio, setPortfolio] = useState<PortfolioItem[]>(() => adminStore.getPortfolio());
   const [settings, setSettings] = useState<SiteSettings>(() => adminStore.getSettings());
+  const [billingCycle, setBillingCycle] = useState<"annual" | "project">("annual");
   const [selectedService, setSelectedService] = useState<string>(
     () => adminStore.getServices()[0]?.name ?? "Landing Page",
   );
+  const [selectedBilling, setSelectedBilling] = useState<"annual" | "project">("annual");
 
   // Reload from store when window gains focus (admin may have saved changes)
   useEffect(() => {
@@ -750,10 +791,11 @@ function Landing() {
   const whatsappUrl = `https://wa.me/244${whatsapp}?text=${encodeURIComponent("Olá ByteKwanza! Gostaria de um orçamento.")}`;
   const serviceNames = services.map((s) => s.name);
 
-  const handleSelectService = (serviceName?: string) => {
+  const handleSelectService = (serviceName?: string, cycle: "annual" | "project" = billingCycle) => {
     if (serviceName) {
       setSelectedService(serviceName);
     }
+    setSelectedBilling(cycle);
     const element = document.getElementById("contacto");
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
@@ -852,22 +894,64 @@ function Landing() {
 
       {/* Services */}
       <section id="servicos" className="mx-auto max-w-7xl px-4 sm:px-6 py-24">
-        <div className="max-w-2xl">
-          <p className="text-sm font-semibold uppercase tracking-widest text-[oklch(0.55_0.15_258)]">
-            Os nossos serviços
-          </p>
-          <h2 className="mt-3 text-3xl md:text-5xl font-bold">
-            Da ideia ao lançamento — cuidamos de tudo.
-          </h2>
-          <p className="mt-4 text-muted-foreground">
-            Escolha o plano que melhor se adapta ao seu projecto. Todos os preços em Kwanzas (AOA) e
-            são indicativos.
-          </p>
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div className="max-w-2xl">
+            <p className="text-sm font-semibold uppercase tracking-widest text-[oklch(0.55_0.15_258)]">
+              Os nossos serviços
+            </p>
+            <h2 className="mt-3 text-3xl md:text-5xl font-bold">
+              Da ideia ao lançamento — cuidamos de tudo.
+            </h2>
+            <p className="mt-4 text-muted-foreground">
+              Escolha a modalidade ideal para a sua empresa. Oferecemos opções de investimento único e planos anuais com desconto adaptados ao mercado Angolano actual.
+            </p>
+          </div>
+
+          {/* Billing Switcher */}
+          <div className="flex items-center gap-1 rounded-2xl bg-secondary p-1.5 border border-border self-start md:self-auto shadow-sm">
+            <button
+              onClick={() => setBillingCycle("annual")}
+              className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-bold transition cursor-pointer ${
+                billingCycle === "annual"
+                  ? "bg-gradient-brand text-primary-foreground shadow-brand"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <Sparkles className="h-3.5 w-3.5" />
+              <span>Plano Anual Reduzido</span>
+              <span className="rounded-full bg-emerald-500/20 px-2 py-0.5 text-[10px] font-extrabold text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
+                Até -20%
+              </span>
+            </button>
+            <button
+              onClick={() => setBillingCycle("project")}
+              className={`rounded-xl px-4 py-2.5 text-xs font-semibold transition cursor-pointer ${
+                billingCycle === "project"
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              Pagamento Único / Projeto
+            </button>
+          </div>
         </div>
 
-        <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {billingCycle === "annual" && (
+          <div className="mt-6 rounded-2xl border border-[oklch(0.72_0.13_78)]/30 bg-[oklch(0.72_0.13_78)]/10 p-4 text-xs sm:text-sm text-foreground/90 flex items-center gap-3">
+            <Sparkles className="h-5 w-5 text-[oklch(0.72_0.13_78)] flex-none" />
+            <p>
+              <strong className="font-semibold text-foreground">Vantagem do Plano Anual:</strong> Inclui desconto exclusivo no valor do projecto, alojamento web, manutenção contínua e suporte técnico prioritário durante 12 meses.
+            </p>
+          </div>
+        )}
+
+        <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {services.map((s) => {
             const Icon = resolveIcon(s.icon);
+            const isAnnual = billingCycle === "annual";
+            const displayPrice = isAnnual && s.annualPrice ? s.annualPrice : s.price;
+            const discountLabel = s.annualDiscount || "-20% Anual";
+
             return (
               <article
                 key={s.name}
@@ -894,10 +978,27 @@ function Landing() {
                 <p className="mt-2 text-xs sm:text-sm text-muted-foreground">{s.desc}</p>
 
                 <div className="mt-5 border-t border-border pt-4 sm:pt-5">
-                  <div className="flex flex-wrap items-baseline gap-1">
-                    <span className="font-display text-xl sm:text-2xl font-bold break-words">{s.price}</span>
-                    <span className="text-xs font-medium text-muted-foreground">AOA</span>
+                  <div className="flex items-center justify-between gap-2 mb-1">
+                    <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                      {isAnnual ? "Plano Anual com Desconto" : "Valor do Projeto (Único)"}
+                    </span>
+                    {isAnnual && (
+                      <span className="rounded-full bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                        {discountLabel}
+                      </span>
+                    )}
                   </div>
+                  <div className="flex flex-wrap items-baseline gap-1">
+                    <span className="font-display text-xl sm:text-2xl font-bold break-words">{displayPrice}</span>
+                    <span className="text-xs font-medium text-muted-foreground">
+                      {isAnnual ? "AOA / ano" : "AOA"}
+                    </span>
+                  </div>
+                  {!isAnnual && s.annualPrice && (
+                    <p className="mt-1 text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
+                      💡 Opção Anual Reduzida: {s.annualPrice} AOA/ano ({discountLabel})
+                    </p>
+                  )}
                 </div>
 
                 <ul className="mt-5 space-y-2 text-sm">
@@ -920,10 +1021,10 @@ function Landing() {
                 </div>
 
                 <button
-                  onClick={() => handleSelectService(s.name)}
+                  onClick={() => handleSelectService(s.name, billingCycle)}
                   className="mt-7 inline-flex items-center justify-center gap-2 rounded-full border border-primary/20 bg-secondary px-4 py-2.5 text-sm font-semibold text-primary hover:bg-primary hover:text-primary-foreground transition cursor-pointer"
                 >
-                  Solicitar orçamento
+                  Solicitar orçamento ({billingCycle === "annual" ? "Plano Anual" : "Projeto"})
                   <ArrowRight className="h-4 w-4" />
                 </button>
               </article>
@@ -1108,6 +1209,7 @@ function Landing() {
               
               <ContactForm
                 selectedService={selectedService}
+                selectedBilling={selectedBilling}
                 whatsapp={whatsapp}
                 serviceNames={serviceNames}
               />

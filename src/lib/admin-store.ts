@@ -272,6 +272,26 @@ export const DEFAULT_PORTFOLIO: PortfolioItem[] = [
     tags: ["Portal de Notícias", "Editorial", "Angola"],
     accent: "oklch(0.65_0.18_25)",
   },
+  {
+    id: "kwanzashop",
+    name: "KwanzaShop E-Commerce",
+    url: "https://bytekwanza.com/#contacto",
+    display: "kwanzashop.ao",
+    screenshot: "/logo.png",
+    desc: "Loja virtual moderna e responsiva com catálogo dinâmico de produtos, pagamentos via Multicaixa Express e notificações automáticas no WhatsApp.",
+    tags: ["E-Commerce", "Vendas Online", "Angola"],
+    accent: "oklch(0.72_0.13_78)",
+  },
+  {
+    id: "eduangola",
+    name: "Portal EduAngola",
+    url: "https://bytekwanza.com/#contacto",
+    display: "eduangola.ao",
+    screenshot: "/logo.png",
+    desc: "Portal de gestão de pré-inscrições, pautas e cursos online concebido para colégios, institutos e centros de formação profissional.",
+    tags: ["Educação", "Portal Web", "Angola"],
+    accent: "oklch(0.60_0.15_250)",
+  },
 ];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────

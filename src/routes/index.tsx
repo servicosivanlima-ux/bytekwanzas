@@ -39,6 +39,8 @@ import {
   Lock,
   Menu,
   X,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({

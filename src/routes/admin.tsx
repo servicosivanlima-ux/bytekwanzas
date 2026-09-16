@@ -890,25 +890,42 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
     [],
   );
 
-  function saveServices() {
-    adminStore.saveServices(services);
-    showToast("✅ Serviços guardados com sucesso!");
+  useEffect(() => {
+    let active = true;
+    async function loadCloudData() {
+      const data = await adminStore.fetchFromSupabase();
+      if (active) {
+        setServices(data.services);
+        setPortfolio(data.portfolio);
+        setSettings(data.settings);
+      }
+    }
+    loadCloudData();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  async function saveServices() {
+    await adminStore.saveServices(services);
+    showToast("✅ Serviços guardados com sucesso no Supabase!");
   }
 
-  function savePortfolio() {
-    adminStore.savePortfolio(portfolio);
-    showToast("✅ Portfólio guardado com sucesso!");
+  async function savePortfolio() {
+    await adminStore.savePortfolio(portfolio);
+    showToast("✅ Portfólio guardado com sucesso no Supabase!");
   }
 
-  function saveSettings() {
-    adminStore.saveSettings(settings);
-    showToast("✅ Definições guardadas com sucesso!");
+  async function saveSettings() {
+    await adminStore.saveSettings(settings);
+    showToast("✅ Definições guardadas com sucesso no Supabase!");
   }
 
   function handleLogout() {
     clearSession();
     onLogout();
   }
+
 
   const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
     { id: "servicos", label: "Serviços", icon: <Briefcase className="h-4 w-4" /> },

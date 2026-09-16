@@ -1,6 +1,7 @@
 // ─── Admin Store ─────────────────────────────────────────────────────────────
-// Stores all editable site content in localStorage.
-// The first user to register becomes the admin.
+// Stores editable site content in Supabase cloud + localStorage fallback.
+
+import { supabase, isSupabaseConfigured } from "./supabase";
 
 export interface AdminUser {
   email: string;
@@ -294,7 +295,7 @@ export const DEFAULT_PORTFOLIO: PortfolioItem[] = [
   },
 ];
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+// ─── LocalStorage Helpers ──────────────────────────────────────────────────────
 
 export async function hashPassword(password: string): Promise<string> {
   const encoder = new TextEncoder();
@@ -307,11 +308,10 @@ export async function hashPassword(password: string): Promise<string> {
 
 function loadStore(): AdminStore {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = typeof window !== "undefined" ? localStorage.getItem(STORAGE_KEY) : null;
     if (!raw) return getDefaultStore();
     const parsed = JSON.parse(raw) as Partial<AdminStore>;
 
-    // Merge services with defaults
     const loadedSvcMap = new Map<string, ServiceItem>(
       (parsed.services || []).map((s) => [s.id, s])
     );
@@ -331,14 +331,13 @@ function loadStore(): AdminStore {
         annualDiscount: existing.annualDiscount || defSvc.annualDiscount || "",
       };
     });
-    // Add custom services added by admin that are not in defaults
+
     (parsed.services || []).forEach((s) => {
       if (!DEFAULT_SERVICES.some((d) => d.id === s.id)) {
         servicesMerged.push(s);
       }
     });
 
-    // Merge portfolio items with defaults
     const loadedPortMap = new Map<string, PortfolioItem>(
       (parsed.portfolio || []).map((p) => [p.id, p])
     );
@@ -346,7 +345,7 @@ function loadStore(): AdminStore {
       const existing = loadedPortMap.get(defItem.id);
       return existing ? { ...defItem, ...existing } : defItem;
     });
-    // Add custom portfolio items added by admin
+
     (parsed.portfolio || []).forEach((p) => {
       if (!DEFAULT_PORTFOLIO.some((d) => d.id === p.id)) {
         portfolioMerged.push(p);
@@ -374,7 +373,9 @@ function getDefaultStore(): AdminStore {
 }
 
 function saveStore(store: AdminStore): void {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
+  if (typeof window !== "undefined") {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
+  }
 }
 
 // ─── Public API ───────────────────────────────────────────────────────────────
@@ -386,7 +387,7 @@ export const adminStore = {
 
   async register(email: string, password: string): Promise<boolean> {
     const store = loadStore();
-    if (store.admin) return false; // already registered
+    if (store.admin) return false;
     const passwordHash = await hashPassword(password);
     store.admin = { email, passwordHash };
     saveStore(store);
@@ -408,34 +409,176 @@ export const adminStore = {
   getServices(): ServiceItem[] {
     return loadStore().services;
   },
-  saveServices(services: ServiceItem[]): void {
+  async saveServices(services: ServiceItem[]): Promise<void> {
     const store = loadStore();
     store.services = services;
     saveStore(store);
+
+    if (isSupabaseConfigured && supabase) {
+      try {
+        const rows = services.map((s, index) => ({
+          id: s.id,
+          icon: s.icon,
+          name: s.name,
+          tag: s.tag,
+          price: s.price,
+          annual_price: s.annualPrice || "",
+          annual_discount: s.annualDiscount || "",
+          desc: s.desc,
+          features: s.features,
+          deadline: s.deadline,
+          ideal: s.ideal,
+          featured: s.featured,
+          position: index,
+          updated_at: new Date().toISOString(),
+        }));
+        await supabase.from("services").upsert(rows);
+      } catch (err) {
+        console.error("Error syncing services to Supabase:", err);
+      }
+    }
   },
 
   // ─── Portfolio ──────────────────────────────────────────────────────────────
   getPortfolio(): PortfolioItem[] {
     return loadStore().portfolio;
   },
-  savePortfolio(portfolio: PortfolioItem[]): void {
+  async savePortfolio(portfolio: PortfolioItem[]): Promise<void> {
     const store = loadStore();
     store.portfolio = portfolio;
     saveStore(store);
+
+    if (isSupabaseConfigured && supabase) {
+      try {
+        const rows = portfolio.map((p, index) => ({
+          id: p.id,
+          name: p.name,
+          url: p.url,
+          display: p.display,
+          screenshot: p.screenshot,
+          desc: p.desc,
+          tags: p.tags,
+          accent: p.accent,
+          position: index,
+          updated_at: new Date().toISOString(),
+        }));
+        await supabase.from("portfolio").upsert(rows);
+      } catch (err) {
+        console.error("Error syncing portfolio to Supabase:", err);
+      }
+    }
   },
 
   // ─── Settings ───────────────────────────────────────────────────────────────
   getSettings(): SiteSettings {
     return loadStore().settings;
   },
-  saveSettings(settings: SiteSettings): void {
+  async saveSettings(settings: SiteSettings): Promise<void> {
     const store = loadStore();
     store.settings = settings;
     saveStore(store);
+
+    if (isSupabaseConfigured && supabase) {
+      try {
+        await supabase.from("site_settings").upsert({
+          id: "default",
+          whatsapp: settings.whatsapp,
+          email: settings.email,
+          nif: settings.nif,
+          hero_title: settings.heroTitle,
+          hero_subtitle: settings.heroSubtitle,
+          catalog_year: settings.catalogYear,
+          updated_at: new Date().toISOString(),
+        });
+      } catch (err) {
+        console.error("Error syncing settings to Supabase:", err);
+      }
+    }
   },
 
-  // ─── Reset ──────────────────────────────────────────────────────────────────
+  // ─── Async Supabase Cloud Sync ──────────────────────────────────────────────
+  async fetchFromSupabase(): Promise<{
+    services: ServiceItem[];
+    portfolio: PortfolioItem[];
+    settings: SiteSettings;
+  }> {
+    const current = loadStore();
+    if (!isSupabaseConfigured || !supabase) {
+      return {
+        services: current.services,
+        portfolio: current.portfolio,
+        settings: current.settings,
+      };
+    }
+
+    try {
+      const [svcRes, portRes, settRes] = await Promise.all([
+        supabase.from("services").select("*").order("position", { ascending: true }),
+        supabase.from("portfolio").select("*").order("position", { ascending: true }),
+        supabase.from("site_settings").select("*").eq("id", "default").single(),
+      ]);
+
+      let services = current.services;
+      if (svcRes.data && svcRes.data.length > 0) {
+        services = svcRes.data.map((r) => ({
+          id: r.id,
+          icon: r.icon,
+          name: r.name,
+          tag: r.tag,
+          price: r.price,
+          annualPrice: r.annual_price || "",
+          annualDiscount: r.annual_discount || "",
+          desc: r.desc,
+          features: Array.isArray(r.features) ? r.features : [],
+          deadline: r.deadline,
+          ideal: r.ideal,
+          featured: Boolean(r.featured),
+        }));
+      }
+
+      let portfolio = current.portfolio;
+      if (portRes.data && portRes.data.length > 0) {
+        portfolio = portRes.data.map((r) => ({
+          id: r.id,
+          name: r.name,
+          url: r.url,
+          display: r.display,
+          screenshot: r.screenshot,
+          desc: r.desc,
+          tags: Array.isArray(r.tags) ? r.tags : [],
+          accent: r.accent,
+        }));
+      }
+
+      let settings = current.settings;
+      if (settRes.data) {
+        settings = {
+          whatsapp: settRes.data.whatsapp || DEFAULT_SETTINGS.whatsapp,
+          email: settRes.data.email || DEFAULT_SETTINGS.email,
+          nif: settRes.data.nif || DEFAULT_SETTINGS.nif,
+          heroTitle: settRes.data.hero_title || DEFAULT_SETTINGS.heroTitle,
+          heroSubtitle: settRes.data.hero_subtitle || DEFAULT_SETTINGS.heroSubtitle,
+          catalogYear: settRes.data.catalog_year || DEFAULT_SETTINGS.catalogYear,
+        };
+      }
+
+      // Update local storage cache
+      saveStore({ ...current, services, portfolio, settings });
+
+      return { services, portfolio, settings };
+    } catch (err) {
+      console.error("Failed to load from Supabase:", err);
+      return {
+        services: current.services,
+        portfolio: current.portfolio,
+        settings: current.settings,
+      };
+    }
+  },
+
   resetAll(): void {
-    localStorage.removeItem(STORAGE_KEY);
+    if (typeof window !== "undefined") {
+      localStorage.removeItem(STORAGE_KEY);
+    }
   },
 };

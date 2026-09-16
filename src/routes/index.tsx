@@ -780,16 +780,29 @@ function Landing() {
   );
   const [selectedBilling, setSelectedBilling] = useState<"annual" | "project">("annual");
 
-  // Reload from store when window gains focus (admin may have saved changes)
+  // Sync data with Supabase on mount and window focus
   useEffect(() => {
+    let active = true;
+    async function syncData() {
+      const data = await adminStore.fetchFromSupabase();
+      if (active) {
+        setServices(data.services);
+        setPortfolio(data.portfolio);
+        setSettings(data.settings);
+      }
+    }
+    syncData();
+
     function onFocus() {
-      setServices(adminStore.getServices());
-      setPortfolio(adminStore.getPortfolio());
-      setSettings(adminStore.getSettings());
+      syncData();
     }
     window.addEventListener("focus", onFocus);
-    return () => window.removeEventListener("focus", onFocus);
+    return () => {
+      active = false;
+      window.removeEventListener("focus", onFocus);
+    };
   }, []);
+
 
   const whatsapp = settings.whatsapp;
   const email = settings.email;

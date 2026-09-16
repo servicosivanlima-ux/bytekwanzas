@@ -17,5 +17,11 @@ export default defineConfig({
     // instead of the default Cloudflare Workers preset.
     preset: "vercel",
     inlineDynamicImports: true,
+    rollupConfig: {
+      output: {
+        inlineDynamicImports: true,
+        preserveModules: false,
+      },
+    },
   },
 });

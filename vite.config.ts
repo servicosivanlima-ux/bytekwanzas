@@ -16,5 +16,6 @@ export default defineConfig({
     // Use the Vercel preset so Nitro generates output compatible with Vercel
     // instead of the default Cloudflare Workers preset.
     preset: "vercel",
+    inlineDynamicImports: true,
   },
 });

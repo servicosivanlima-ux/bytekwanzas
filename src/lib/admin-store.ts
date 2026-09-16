@@ -505,9 +505,9 @@ export const adminStore = {
     const current = loadStore();
     if (!isSupabaseConfigured || !supabase) {
       return {
-        services: current.services,
-        portfolio: current.portfolio,
-        settings: current.settings,
+        services: current.services || DEFAULT_SERVICES,
+        portfolio: current.portfolio || DEFAULT_PORTFOLIO,
+        settings: current.settings || DEFAULT_SETTINGS,
       };
     }
 
@@ -515,63 +515,84 @@ export const adminStore = {
       const [svcRes, portRes, settRes] = await Promise.all([
         supabase.from("services").select("*").order("position", { ascending: true }),
         supabase.from("portfolio").select("*").order("position", { ascending: true }),
-        supabase.from("site_settings").select("*").eq("id", "default").single(),
+        supabase.from("site_settings").select("*").eq("id", "default").maybeSingle(),
       ]);
 
-      let services = current.services;
-      if (svcRes.data && svcRes.data.length > 0) {
-        services = svcRes.data.map((r) => ({
-          id: r.id,
-          icon: r.icon,
-          name: r.name,
-          tag: r.tag,
-          price: r.price,
-          annualPrice: r.annual_price || "",
-          annualDiscount: r.annual_discount || "",
-          desc: r.desc,
-          features: Array.isArray(r.features) ? r.features : [],
-          deadline: r.deadline,
-          ideal: r.ideal,
-          featured: Boolean(r.featured),
-        }));
+      let services = current.services || DEFAULT_SERVICES;
+      if (svcRes.data && Array.isArray(svcRes.data) && svcRes.data.length > 0) {
+        services = svcRes.data.map((r) => {
+          let features: string[] = [];
+          if (Array.isArray(r.features)) {
+            features = r.features.map(String);
+          } else if (typeof r.features === "string") {
+            try {
+              const p = JSON.parse(r.features);
+              if (Array.isArray(p)) features = p.map(String);
+            } catch {}
+          }
+          return {
+            id: String(r.id || Math.random().toString(36).slice(2)),
+            icon: String(r.icon || "Globe"),
+            name: String(r.name || "Serviço"),
+            tag: String(r.tag || ""),
+            price: String(r.price || "0"),
+            annualPrice: String(r.annual_price || r.annualPrice || ""),
+            annualDiscount: String(r.annual_discount || r.annualDiscount || ""),
+            desc: String(r.desc || ""),
+            features: features.length > 0 ? features : ["Serviço personalizado"],
+            deadline: String(r.deadline || "A combinar"),
+            ideal: String(r.ideal || "Todos os negócios"),
+            featured: Boolean(r.featured),
+          };
+        });
       }
 
-      let portfolio = current.portfolio;
-      if (portRes.data && portRes.data.length > 0) {
-        portfolio = portRes.data.map((r) => ({
-          id: r.id,
-          name: r.name,
-          url: r.url,
-          display: r.display,
-          screenshot: r.screenshot,
-          desc: r.desc,
-          tags: Array.isArray(r.tags) ? r.tags : [],
-          accent: r.accent,
-        }));
+      let portfolio = current.portfolio || DEFAULT_PORTFOLIO;
+      if (portRes.data && Array.isArray(portRes.data) && portRes.data.length > 0) {
+        portfolio = portRes.data.map((r) => {
+          let tags: string[] = [];
+          if (Array.isArray(r.tags)) {
+            tags = r.tags.map(String);
+          } else if (typeof r.tags === "string") {
+            try {
+              const p = JSON.parse(r.tags);
+              if (Array.isArray(p)) tags = p.map(String);
+            } catch {}
+          }
+          return {
+            id: String(r.id || Math.random().toString(36).slice(2)),
+            name: String(r.name || "Projecto"),
+            url: String(r.url || "#"),
+            display: String(r.display || "site.ao"),
+            screenshot: String(r.screenshot || "/logo.png"),
+            desc: String(r.desc || ""),
+            tags: tags.length > 0 ? tags : ["Web"],
+            accent: String(r.accent || "oklch(0.72 0.13 78)"),
+          };
+        });
       }
 
-      let settings = current.settings;
+      let settings = current.settings || DEFAULT_SETTINGS;
       if (settRes.data) {
         settings = {
-          whatsapp: settRes.data.whatsapp || DEFAULT_SETTINGS.whatsapp,
-          email: settRes.data.email || DEFAULT_SETTINGS.email,
-          nif: settRes.data.nif || DEFAULT_SETTINGS.nif,
-          heroTitle: settRes.data.hero_title || DEFAULT_SETTINGS.heroTitle,
-          heroSubtitle: settRes.data.hero_subtitle || DEFAULT_SETTINGS.heroSubtitle,
-          catalogYear: settRes.data.catalog_year || DEFAULT_SETTINGS.catalogYear,
+          whatsapp: String(settRes.data.whatsapp || DEFAULT_SETTINGS.whatsapp),
+          email: String(settRes.data.email || DEFAULT_SETTINGS.email),
+          nif: String(settRes.data.nif || DEFAULT_SETTINGS.nif),
+          heroTitle: String(settRes.data.hero_title || settRes.data.heroTitle || DEFAULT_SETTINGS.heroTitle),
+          heroSubtitle: String(settRes.data.hero_subtitle || settRes.data.heroSubtitle || DEFAULT_SETTINGS.heroSubtitle),
+          catalogYear: String(settRes.data.catalog_year || settRes.data.catalogYear || DEFAULT_SETTINGS.catalogYear),
         };
       }
 
-      // Update local storage cache
       saveStore({ ...current, services, portfolio, settings });
 
       return { services, portfolio, settings };
     } catch (err) {
       console.error("Failed to load from Supabase:", err);
       return {
-        services: current.services,
-        portfolio: current.portfolio,
-        settings: current.settings,
+        services: current.services || DEFAULT_SERVICES,
+        portfolio: current.portfolio || DEFAULT_PORTFOLIO,
+        settings: current.settings || DEFAULT_SETTINGS,
       };
     }
   },

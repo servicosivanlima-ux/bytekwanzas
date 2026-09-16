@@ -1081,7 +1081,7 @@ function Landing() {
                 </div>
 
                 <ul className="mt-5 space-y-2 text-sm">
-                  {s.features.map((f) => (
+                  {(s.features || []).map((f) => (
                     <li key={f} className="flex gap-2">
                       <Check className="mt-0.5 h-4 w-4 flex-none text-[oklch(0.6_0.15_78)]" />
                       <span className="text-foreground/80">{f}</span>
@@ -1153,7 +1153,7 @@ function Landing() {
         </div>
 
         <div className="mt-14 grid gap-8 md:grid-cols-2">
-          {portfolio.map((p) => (
+          {(portfolio || []).map((p) => (
             <a
               key={p.url}
               href={p.url}
@@ -1198,7 +1198,7 @@ function Landing() {
                 </div>
                 <p className="text-sm text-muted-foreground leading-relaxed">{p.desc}</p>
                 <div className="flex flex-wrap gap-2 mt-auto pt-2">
-                  {p.tags.map((t) => (
+                  {(p.tags || []).map((t) => (
                     <span
                       key={t}
                       className="rounded-full border border-border px-3 py-1 text-[11px] font-medium uppercase tracking-wide text-muted-foreground"

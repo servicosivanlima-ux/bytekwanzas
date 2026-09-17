@@ -6,11 +6,19 @@
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
+// In CI (Vercel sets CI=true and VERCEL=1), disable route tree regeneration
+// to preserve the committed routeTree.gen.ts with the correct /admin route.
+// The @tanstack/router-plugin reads `enableRouteGeneration` from the plugin options.
+const isCI = process.env.CI === "true" || process.env.VERCEL === "1";
+
 export default defineConfig({
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
     server: { entry: "server" },
+    // In CI/Vercel, do not let the router plugin overwrite routeTree.gen.ts.
+    // This prevents a different plugin version from removing the /admin route.
+    enableRouteGeneration: !isCI,
   },
   nitro: {
     // Use the Vercel preset so Nitro generates output compatible with Vercel

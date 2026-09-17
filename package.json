@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
+    "prebuild": "node scripts/restore-route-tree.js",
     "build": "vite build",
+    "postbuild": "node scripts/restore-route-tree.js",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",

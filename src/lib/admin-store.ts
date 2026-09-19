@@ -599,6 +599,25 @@ export const adminStore = {
             portfolio.push(p);
           }
         });
+
+        // Sync back merged portfolio to Supabase so cloud DB stays up to date
+        try {
+          const rows = portfolio.map((p, index) => ({
+            id: p.id,
+            name: p.name,
+            url: p.url,
+            display: p.display,
+            screenshot: p.screenshot,
+            desc: p.desc,
+            tags: p.tags,
+            accent: p.accent,
+            position: index,
+            updated_at: new Date().toISOString(),
+          }));
+          await supabase.from("portfolio").upsert(rows);
+        } catch (e) {
+          console.error("Failed to auto-upsert portfolio defaults to Supabase:", e);
+        }
       }
 
       let settings = current.settings || DEFAULT_SETTINGS;

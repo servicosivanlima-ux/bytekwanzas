@@ -569,7 +569,7 @@ export const adminStore = {
 
       let portfolio = current.portfolio || DEFAULT_PORTFOLIO;
       if (portRes.data && Array.isArray(portRes.data) && portRes.data.length > 0) {
-        portfolio = portRes.data.map((r) => {
+        const fetchedPortfolio = portRes.data.map((r) => {
           let tags: string[] = [];
           if (Array.isArray(r.tags)) {
             tags = r.tags.map(String);
@@ -589,6 +589,15 @@ export const adminStore = {
             tags: tags.length > 0 ? tags : ["Web"],
             accent: String(r.accent || "oklch(0.72 0.13 78)"),
           };
+        });
+
+        // Merge fetched items with DEFAULT_PORTFOLIO so new defaults aren't lost
+        const fetchedMap = new Map(fetchedPortfolio.map((p) => [p.id, p]));
+        portfolio = DEFAULT_PORTFOLIO.map((defItem) => fetchedMap.get(defItem.id) || defItem);
+        fetchedPortfolio.forEach((p) => {
+          if (!DEFAULT_PORTFOLIO.some((d) => d.id === p.id)) {
+            portfolio.push(p);
+          }
         });
       }
 

@@ -768,7 +768,10 @@ const reasons = [
   { icon: Shield, title: "Soluções à medida", desc: "Cada projecto personalizado ao seu negócio." },
 ];
 
+import { AdminModal } from "../components/AdminModal";
+
 function Landing() {
+  const [adminModalOpen, setAdminModalOpen] = useState(false);
   // Load dynamic data from admin store
   const [services, setServices] = useState<ServiceItem[]>(() => adminStore.getServices());
   const [portfolio, setPortfolio] = useState<PortfolioItem[]>(() => adminStore.getPortfolio());
@@ -1346,15 +1349,26 @@ function Landing() {
           </p>
           <div className="flex items-center gap-4">
             <p className="text-xs text-muted-foreground/60">NIF: {settings.nif}</p>
-            <a
-              href="/admin"
-              className="text-xs text-muted-foreground/30 hover:text-muted-foreground/60 transition"
+            <button
+              onClick={() => setAdminModalOpen(true)}
+              className="text-xs text-muted-foreground/40 hover:text-muted-foreground transition cursor-pointer"
             >
               Admin
-            </a>
+            </button>
           </div>
         </div>
       </footer>
+
+      {/* Admin Modal */}
+      <AdminModal
+        isOpen={adminModalOpen}
+        onClose={() => setAdminModalOpen(false)}
+        onSaveSuccess={() => {
+          setServices(adminStore.getServices());
+          setPortfolio(adminStore.getPortfolio());
+          setSettings(adminStore.getSettings());
+        }}
+      />
     </div>
   );
 }

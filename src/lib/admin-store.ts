@@ -538,7 +538,10 @@ export const adminStore = {
         supabase.from("site_settings").select("*").eq("id", "default").maybeSingle(),
       ]);
 
-      let services = current.services || DEFAULT_SERVICES;
+      // ── Services: Supabase is the source of truth ──────────────────────────
+      // If Supabase has rows, use them directly. Only fall back to defaults
+      // when Supabase returns nothing (first-time setup or empty table).
+      let services = DEFAULT_SERVICES;
       if (svcRes.data && Array.isArray(svcRes.data) && svcRes.data.length > 0) {
         services = svcRes.data.map((r) => {
           let features: string[] = [];
@@ -567,9 +570,13 @@ export const adminStore = {
         });
       }
 
-      let portfolio = current.portfolio || DEFAULT_PORTFOLIO;
+      // ── Portfolio: Supabase is the source of truth ─────────────────────────
+      // Use Supabase data directly when available. Do NOT auto-upsert back to
+      // Supabase here — that caused a cycle where local defaults overwrite
+      // cloud data on every page load, making admin edits invisible remotely.
+      let portfolio = DEFAULT_PORTFOLIO;
       if (portRes.data && Array.isArray(portRes.data) && portRes.data.length > 0) {
-        const fetchedPortfolio = portRes.data.map((r) => {
+        portfolio = portRes.data.map((r) => {
           let tags: string[] = [];
           if (Array.isArray(r.tags)) {
             tags = r.tags.map(String);
@@ -590,34 +597,6 @@ export const adminStore = {
             accent: String(r.accent || "oklch(0.72 0.13 78)"),
           };
         });
-
-        // Merge fetched items with DEFAULT_PORTFOLIO so new defaults aren't lost
-        const fetchedMap = new Map(fetchedPortfolio.map((p) => [p.id, p]));
-        portfolio = DEFAULT_PORTFOLIO.map((defItem) => fetchedMap.get(defItem.id) || defItem);
-        fetchedPortfolio.forEach((p) => {
-          if (!DEFAULT_PORTFOLIO.some((d) => d.id === p.id)) {
-            portfolio.push(p);
-          }
-        });
-
-        // Sync back merged portfolio to Supabase so cloud DB stays up to date
-        try {
-          const rows = portfolio.map((p, index) => ({
-            id: p.id,
-            name: p.name,
-            url: p.url,
-            display: p.display,
-            screenshot: p.screenshot,
-            desc: p.desc,
-            tags: p.tags,
-            accent: p.accent,
-            position: index,
-            updated_at: new Date().toISOString(),
-          }));
-          await supabase.from("portfolio").upsert(rows);
-        } catch (e) {
-          console.error("Failed to auto-upsert portfolio defaults to Supabase:", e);
-        }
       }
 
       let settings = current.settings || DEFAULT_SETTINGS;
